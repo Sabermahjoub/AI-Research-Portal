@@ -10,8 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChercheurDTO {
+    private Long id;
+    private String username;
     private String firstName;
     private String lastName;
+    private String email;
     private String address;
     private String workAddress;
     private String jobTitle;

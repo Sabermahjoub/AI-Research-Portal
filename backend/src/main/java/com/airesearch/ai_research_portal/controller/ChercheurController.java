@@ -17,12 +17,12 @@ public class ChercheurController {
     private ChercheurService chercheurService;
 
     @PostMapping
-    public Chercheur addChercheur(@RequestBody Chercheur chercheur) {
+    public ChercheurDTO addChercheur(@RequestBody Chercheur chercheur) {
         return chercheurService.addChercheur(chercheur);
     }
 
     @PutMapping("/{id}")
-    public Optional<Chercheur> updateChercheur(@PathVariable Long id, @RequestBody Chercheur updatedChercheur) {
+    public Optional<ChercheurDTO> updateChercheur(@PathVariable Long id, @RequestBody ChercheurDTO updatedChercheur) {
         return chercheurService.updateChercheur(id, updatedChercheur);
     }
 
@@ -32,7 +32,7 @@ public class ChercheurController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Chercheur> getChercheurById(@PathVariable Long id) {
+    public Optional<ChercheurDTO> getChercheurById(@PathVariable Long id) {
         return chercheurService.getChercheurById(id);
     }
 
@@ -42,7 +42,7 @@ public class ChercheurController {
     }
 
     @GetMapping("/search")
-    public List<Chercheur> findByAddress(@RequestParam(required = false) String address, @RequestParam(required = false) String workAddress, @RequestParam(required = false) String jobTitle) {
+    public List<ChercheurDTO> findByAddress(@RequestParam(required = false) String address, @RequestParam(required = false) String workAddress, @RequestParam(required = false) String jobTitle) {
         return chercheurService.getByData(address, workAddress, jobTitle);
     }
 }

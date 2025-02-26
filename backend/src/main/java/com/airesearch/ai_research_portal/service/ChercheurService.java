@@ -16,11 +16,12 @@ public class ChercheurService {
     @Autowired
     private ChercheurRepository chercheurRepository;
 
-    public Chercheur addChercheur(Chercheur chercheur) {
-        return chercheurRepository.save(chercheur);
+    public ChercheurDTO addChercheur(Chercheur chercheur) {
+        Chercheur savedChercheur = chercheurRepository.save(chercheur);
+        return toDTO(savedChercheur);
     }
 
-    public Optional<Chercheur> updateChercheur(Long id, Chercheur updatedChercheur) {
+    public Optional<ChercheurDTO> updateChercheur(Long id, ChercheurDTO updatedChercheur) {
         return chercheurRepository.findById(id).map(existingChercheur -> {
             existingChercheur.setFirstName(updatedChercheur.getFirstName());
             existingChercheur.setLastName(updatedChercheur.getLastName());
@@ -28,39 +29,37 @@ public class ChercheurService {
             existingChercheur.setAddress(updatedChercheur.getAddress());
             existingChercheur.setWorkAddress(updatedChercheur.getWorkAddress());
             existingChercheur.setJobTitle(updatedChercheur.getJobTitle());
-            return chercheurRepository.save(existingChercheur);
+
+            Chercheur savedChercheur = chercheurRepository.save(existingChercheur);
+            return toDTO(savedChercheur);
         });
     }
+
 
     public List<ChercheurDTO> getAllChercheurs() {
         return chercheurRepository.findAll().stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    public Optional<Chercheur> getChercheurById(Long id) {
-        return chercheurRepository.findById(id);
+    public Optional<ChercheurDTO> getChercheurById(Long id) {
+        return chercheurRepository.findById(id)
+                .map(this::toDTO);
     }
 
     public void deleteChercheur(Long id) {
         chercheurRepository.deleteById(id);
     }
 
-    public List<Chercheur> findByAddress(String address) {
-        return chercheurRepository.findByAddress(address);
-    }
 
-    public List<Chercheur> findByWorkAddress(String workAddress) {
-        return chercheurRepository.findByWorkAddress(workAddress);
-    }
-
-    public List<Chercheur> findByJobTitle(String jobTitle) {
-        return chercheurRepository.findByJobTitle(jobTitle);
-    }
-
-    public List<Chercheur> getByData(String address, String workAddress, String jobTitle) {
-        return chercheurRepository.findByAddressAndWorkAddressAndJobTitle(address, workAddress, jobTitle);
+    public List<ChercheurDTO> getByData(String address, String workAddress, String jobTitle) {
+        return chercheurRepository.findByAddressContainingIgnoreCaseOrWorkAddressContainingIgnoreCaseOrJobTitleContainingIgnoreCase(address, workAddress, jobTitle)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
     private ChercheurDTO toDTO(Chercheur chercheur) {
         ChercheurDTO dto = new ChercheurDTO();
+        dto.setId(chercheur.getId());
+        dto.setUsername(chercheur.getUsername());
         dto.setFirstName(chercheur.getFirstName());
         dto.setLastName(chercheur.getLastName());
         dto.setAddress(chercheur.getAddress());
@@ -68,4 +67,6 @@ public class ChercheurService {
         dto.setJobTitle(chercheur.getJobTitle());
         return dto;
     }
+
+
 }
