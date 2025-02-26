@@ -1,5 +1,6 @@
 package com.airesearch.ai_research_portal.controller;
 
+import com.airesearch.ai_research_portal.dto.ChercheurDTO;
 import com.airesearch.ai_research_portal.model.Chercheur;
 import com.airesearch.ai_research_portal.service.ChercheurService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class ChercheurController {
     }
 
     @GetMapping
-    public List<Chercheur> getAllChercheurs() {
+    public List<ChercheurDTO> getAllChercheurs() {
         return chercheurService.getAllChercheurs();
     }
 
@@ -40,18 +41,8 @@ public class ChercheurController {
         chercheurService.deleteChercheur(id);
     }
 
-    @GetMapping("/search/address")
-    public List<Chercheur> findByAddress(@RequestParam String address) {
-        return chercheurService.findByAddress(address);
-    }
-
-    @GetMapping("/search/work-address")
-    public List<Chercheur> findByWorkAddress(@RequestParam String workAddress) {
-        return chercheurService.findByWorkAddress(workAddress);
-    }
-
-    @GetMapping("/search/job-title")
-    public List<Chercheur> findByJobTitle(@RequestParam String jobTitle) {
-        return chercheurService.findByJobTitle(jobTitle);
+    @GetMapping("/search")
+    public List<Chercheur> findByAddress(@RequestParam(required = false) String address, @RequestParam(required = false) String workAddress, @RequestParam(required = false) String jobTitle) {
+        return chercheurService.getByData(address, workAddress, jobTitle);
     }
 }
