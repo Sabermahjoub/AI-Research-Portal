@@ -1,7 +1,7 @@
 package com.airesearch.ai_research_portal.controller;
 
 import com.airesearch.ai_research_portal.model.Commentaire;
-import com.airesearch.ai_research_portal.service.CommentaireServiceImpl;
+import com.airesearch.ai_research_portal.service.CommentaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CommentaireController {
     @Autowired
-    private CommentaireServiceImpl commentaireService;
+    private CommentaireService commentaireService;
 
 
     @GetMapping("/all")
