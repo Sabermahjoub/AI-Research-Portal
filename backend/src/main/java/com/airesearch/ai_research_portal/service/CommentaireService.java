@@ -5,47 +5,48 @@ import com.airesearch.ai_research_portal.model.Commentaire;
 import com.airesearch.ai_research_portal.repository.CommentaireRepositry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CommentaireService implements com.airesearch.ai_research_portal.service.Interface.CommentaireService {
+public class CommentaireService{
 
     @Autowired
     private CommentaireRepositry CommentaireRepository;
-    @Override
-    public void addCommentaire(Commentaire c) {
-        CommentaireRepository.save(c);
+
+    public Commentaire addCommentaire(Commentaire c) throws Exception {
+        return this.CommentaireRepository.save(c);
 
     }
 
-    @Override
-    public List<Commentaire> getCommentaires() {
+    public List<Commentaire> getCommentaires() throws Exception {
         return CommentaireRepository.findAll();
 
     }
-    @Override
-    public Commentaire getCommentaireById(int id) {
-        Optional<Commentaire> commentaire = CommentaireRepository.findById((long) id);
-        return commentaire.orElse(null);
+
+    public Commentaire getCommentaireById(long idCommentaire) throws Exception{
+        Optional<Commentaire> optionalCommentaire = this.CommentaireRepository.findById(idCommentaire);
+        if (optionalCommentaire.isEmpty()) {
+            throw new RuntimeException("Commentaire avec id : "+idCommentaire+" est introuvable!");
+        }
+        return optionalCommentaire.get();
     }
 
-    @Override
-    public Commentaire deleteCommentaire(int id) {
-        Optional<Commentaire> commentaire = CommentaireRepository.findById((long) id);
-        if (commentaire.isPresent()) {
-            CommentaireRepository.delete(commentaire.get());
-            return commentaire.get(); // Retourner le commentaire supprimé
+    public void deleteCommentaire (long idCommentaire) throws Exception {
+        if (!this.CommentaireRepository.existsById(idCommentaire)){
+            throw new RuntimeException("Commentaire with id : "+idCommentaire+" doesn't exist.");
         }
-        return null;
+        this.CommentaireRepository.deleteById(idCommentaire);
     }
 
-    @Override
-    public Commentaire updateCommentaire(Commentaire c) {
-        if (CommentaireRepository.existsById(c.getId())) {
-            return CommentaireRepository.save(c); // Si le commentaire existe, on le met à jour
+    public Commentaire updateCommentaire(Commentaire comm) throws Exception {
+        if (!this.CommentaireRepository.existsById(comm.getId())){
+            throw new RuntimeException("Commentaire with id : "+comm.getId()+" doesn't exist.");
         }
-        return null;
+        return this.CommentaireRepository.save(comm);
+    }
+
+    public List<Commentaire> getAllCommentsByPublication(long idPublication) throws Exception {
+        return this.CommentaireRepository.findByIdPublication(idPublication);
     }
 }
