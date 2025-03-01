@@ -1,9 +1,8 @@
 package com.airesearch.ai_research_portal.service;
 
 import com.airesearch.ai_research_portal.model.Commentaire;
-import com.airesearch.ai_research_portal.repository.CommentaireRepository;
-import com.airesearch.ai_research_portal.service.Interface.CommentaireService;
 
+import com.airesearch.ai_research_portal.repository.CommentaireRepositry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CommentaireServiceImpl implements CommentaireService {
+public class CommentaireService implements com.airesearch.ai_research_portal.service.Interface.CommentaireService {
 
     @Autowired
-    private CommentaireRepository CommentaireRepository;
+    private CommentaireRepositry CommentaireRepository;
     @Override
     public void addCommentaire(Commentaire c) {
         CommentaireRepository.save(c);
