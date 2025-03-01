@@ -20,8 +20,8 @@ public class Chercheur extends User {
     private String address;
     private String workAddress;
     private String jobTitle;
-    @OneToMany(mappedBy = "chercheur", cascade = CascadeType.ALL)
-    private List<Commentaire> commentaires;
+//    @OneToMany(mappedBy = "chercheur", cascade = CascadeType.ALL)
+//    private List<Commentaire> commentaires;
     public Chercheur() {
         this.role = Role.CHERCHEUR;
     }
