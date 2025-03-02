@@ -1,6 +1,7 @@
 package com.airesearch.ai_research_portal.service;
 
 import com.airesearch.ai_research_portal.model.Commentaire;
+import com.airesearch.ai_research_portal.model.Domain;
 import com.airesearch.ai_research_portal.model.Publication;
 import com.airesearch.ai_research_portal.repository.PublicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,13 @@ public class PublicationService {
             throw new RuntimeException("Publication already exists ");
         }
         return this.pubRepo.save(publication);
+    }
+
+    public List<Domain> getPublicationDomaines(Long publicationId) {
+        Publication pub = pubRepo.findById(publicationId).orElseThrow(
+                () -> new IllegalStateException("No publication with this id")
+        );
+        return pub.getDomains();
     }
 
 }

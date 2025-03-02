@@ -1,6 +1,7 @@
 package com.airesearch.ai_research_portal.controller;
 
 import com.airesearch.ai_research_portal.model.Domain;
+import com.airesearch.ai_research_portal.model.Publication;
 import org.springframework.web.bind.annotation.*;
 import com.airesearch.ai_research_portal.service.DomainService;
 import java.util.List;
@@ -40,5 +41,9 @@ public class DomainController {
         domainService.updateDomain(domainId, domainName, domainDesc);
     }
 
-    //TODO publication manipulation
+    //TODO publication manipulation --> done
+    @GetMapping(path="{domaineId}/publications")
+    public List<Publication> getDomainePublications(@PathVariable(name = "domaineId") Long domaineId){
+        return domainService.getDomainePublications(domaineId);
+    }
 }
