@@ -12,7 +12,7 @@ import lombok.*;
 @Entity
 public class Domain {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue
     private Long domainId;
     private String domainName;
     private String domainDesc;
