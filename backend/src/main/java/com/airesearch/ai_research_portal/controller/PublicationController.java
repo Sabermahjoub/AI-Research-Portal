@@ -1,5 +1,6 @@
 package com.airesearch.ai_research_portal.controller;
 
+import com.airesearch.ai_research_portal.model.Domain;
 import com.airesearch.ai_research_portal.model.Publication;
 import com.airesearch.ai_research_portal.service.PublicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,6 +134,12 @@ public class PublicationController {
             return new ResponseEntity<>(responseBody,HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    // Get by domains, added by moataz
+    @GetMapping(path="{publicationId}/domaines")
+    public List<Domain> getPublicationDomaines(@PathVariable(name="publicationId") Long publicationId){
+        return pubService.getPublicationDomaines(publicationId);
     }
 
     @DeleteMapping("/{idPublication}")
