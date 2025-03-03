@@ -1,6 +1,7 @@
 package com.airesearch.ai_research_portal.service;
 
 import com.airesearch.ai_research_portal.model.Domain;
+import com.airesearch.ai_research_portal.model.Publication;
 import com.airesearch.ai_research_portal.repository.DomainRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -54,4 +55,10 @@ public class DomainService {
     }
 
      //TODO publication manipulation.
+     public List<Publication> getDomainePublications(Long domaineId) {
+         Domain domaine = domainRepository.findById(domaineId).orElseThrow(
+                 () -> new IllegalStateException("No domaine found with this id")
+         );
+         return domaine.getPublications();
+     }
 }
