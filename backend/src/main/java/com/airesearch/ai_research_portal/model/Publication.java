@@ -57,7 +57,7 @@ public class Publication {
     private List<Commentaire> commentaires;
 
     @ManyToMany
-    @JsonManagedReference
+    // @JsonManagedReference
     @JoinTable(
             name = "publication_domains",
             joinColumns = @JoinColumn(name = "id"),

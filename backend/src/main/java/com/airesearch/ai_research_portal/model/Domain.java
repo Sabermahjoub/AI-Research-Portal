@@ -20,7 +20,7 @@ public class Domain {
     private String domainName;
     private String domainDesc;
     @ManyToMany(mappedBy = "domains")
-    @JsonBackReference
+    // @JsonBackReference
     private List<Publication> publications;
 
 }
