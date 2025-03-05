@@ -26,8 +26,8 @@ public class DomainController {
         return domainService.getDomainById(domainId);
     }
 
-    @PostMapping
-    public void registerDomain(@RequestBody Domain domain) throws IllegalStateException{
+    @PostMapping(consumes={"application/json"})
+    public void registerDomain(@RequestBody Domain domain) throws Exception{
         domainService.registerDomain(domain);
     }
 
