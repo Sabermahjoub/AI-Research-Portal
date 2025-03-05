@@ -1,5 +1,6 @@
 
 package com.airesearch.ai_research_portal.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -56,8 +57,9 @@ public class Publication {
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Commentaire> commentaires;
 
-    @ManyToMany
-    @JsonManagedReference
+    @ManyToMany( cascade = CascadeType.ALL)
+    //@JsonManagedReference
+    //@JsonIgnore
     @JoinTable(
             name = "publication_domains",
             joinColumns = @JoinColumn(name = "id"),

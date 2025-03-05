@@ -5,9 +5,10 @@ import com.airesearch.ai_research_portal.model.Publication;
 import org.springframework.web.bind.annotation.*;
 import com.airesearch.ai_research_portal.service.DomainService;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping(path="domains")
+@RequestMapping(path = "domains")
 public class DomainController {
     private DomainService domainService;
 
@@ -25,8 +26,8 @@ public class DomainController {
         return domainService.getDomainById(domainId);
     }
 
-    @PostMapping
-    public void registerDomain(@RequestBody Domain domain) throws IllegalStateException{
+    @PostMapping(consumes={"application/json"})
+    public void registerDomain(@RequestBody Domain domain) throws Exception{
         domainService.registerDomain(domain);
     }
 
@@ -36,14 +37,17 @@ public class DomainController {
     }
 
     @PutMapping(path="{domainId}")
-    public void updateDomain(@PathVariable(name = "domainId") Long domainId, @RequestParam(required = false) String domainName, @RequestParam(required = false) String domainDesc){
-        System.out.println(domainName);
+    public void updateDomain(@PathVariable(name = "domainId") Long domainId, @RequestBody Map<String, String> requestBody) {
+        String domainName = requestBody.get("domainName");
+        String domainDesc = requestBody.get("domainDesc");
+
+        System.out.println(domainName + " Controller");
         domainService.updateDomain(domainId, domainName, domainDesc);
     }
 
     //TODO publication manipulation --> done
-    @GetMapping(path="{domaineId}/publications")
-    public List<Publication> getDomainePublications(@PathVariable(name = "domaineId") Long domaineId){
-        return domainService.getDomainePublications(domaineId);
+    @GetMapping(path="{domainId}/publications")
+    public List<Publication> getDomainPublications(@PathVariable(name = "domainId") Long domainId){
+        return domainService.getDomainePublications(domainId);
     }
 }

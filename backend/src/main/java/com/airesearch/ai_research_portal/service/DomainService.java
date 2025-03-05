@@ -46,6 +46,7 @@ public class DomainService {
         Domain domain = domainRepository.findById(domainId).orElseThrow(
                 () -> new IllegalStateException("No such domain with id" + domainId)
         );
+        System.out.println(domainName);
         if(!domainName.isEmpty()){
             domain.setDomainName(domainName);
         }
