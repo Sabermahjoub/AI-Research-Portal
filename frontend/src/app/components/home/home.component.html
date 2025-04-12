@@ -1,9 +1,142 @@
 <mat-sidenav-container class="example-container">
     <mat-sidenav #sidenav mode="side" [(opened)]="sideBarOpened">
-        <div class="bg-red-400">
-            <h1 class="text-3xl font-bold underline text-center mt-10">
-                Sidenav Test
-              </h1>
+        <div class="p-2 bg m-0 absolute h-full w-[75%] flex-col">
+
+            <!-- App logo + name -->
+            <div class="p-1 flex justify-center items-center h-[15%] ">
+                <span class="material-symbols-outlined text-white text-7xl w-[10%]">
+                    network_intel_node
+                </span>
+                <span class=" w-[90%] flex justify-center items-center text-start text-white text-5xl">CoreAI</span>
+                <!--img src="/coreAI.png" alt="CoreAI Logo" class="h-full mx-auto " /-->
+            </div>
+
+            <hr>
+
+            <!-- My profile div -->
+             <!-- or _3 for women -->
+            <div class="w-[100%] h-[10%] flex justify-center items-center gap-2">
+                <div class="flex justify-center items-center w-[20%] h-[80%]">
+                    <span class="material-symbols-outlined text-white text-4xl">
+                        face
+                    </span>
+                </div>
+                <div class="flex justify-center items-center w-[80%] h-[80%]">
+                    <span class="w-full text-center text-white font-extrabold">Mohamed Saber Mahjoub</span>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <!-- Main container for the menu items -->
+            <div class="w-full mb-6 justify-center items-center flex flex-col p-0 h-[70%]">
+                
+                <!-- App pages -->
+                <div class="flex flex-col w-[95%] h-[90%] p-1 gap-2">
+
+                    <!-- Home -->
+                    <div class="flex justify-center gap-2 items-center w-[full] h-[10%] hover:cursor-pointer hover:bg-white/10 rounded-md hover:border hover:border-white/20 hover:backdrop-blur-sm hover:shadow-md "
+                        [ngClass]="{
+                            'bg-white text-gray-700 shadow-md': activeItem === 'home',
+                            'text-white hover:bg-white/10 hover:text-white': activeItem !== 'home'
+                        }"
+                        (click)="activeItem = 'home'"
+                    >
+                        <div class="flex w-[20%]">
+                            <span class="material-symbols-outlined text-3xl"
+                                [ngClass]="{ 'text-gray-700': activeItem === 'home', 'text-white': activeItem !== 'home' }"
+                            >
+                                home
+                            </span>
+                        </div>
+                        <div class="flex justify-start items-center w-[65%]"><span>Home</span></div>
+
+                    </div>
+
+                    <!-- My account -->
+                    <div class="flex justify-center gap-2 items-center w-[full] h-[10%] hover:cursor-pointer hover:bg-white/10 rounded-md hover:border hover:border-white/20 hover:backdrop-blur-sm hover:shadow-md "
+                        [ngClass]="{
+                            'bg-white text-gray-700 shadow-md': activeItem === 'manage-accounts',
+                            'text-white hover:bg-white/10 hover:text-white': activeItem !== 'manage-accounts'
+                        }"
+                        (click)="activeItem = 'manage-accounts'"
+                    >
+                        <div class="flex w-[20%]">
+                            <span class="material-symbols-outlined text-3xl"
+                                [ngClass]="{ 'text-gray-700': activeItem === 'manage-accounts', 'text-white': activeItem !== 'manage-accounts' }"
+                            >
+                                manage_accounts
+                            </span>
+                        </div>
+                        <div class="flex justify-start items-center w-[65%]"><span>My account</span></div>
+
+                    </div>
+
+                    <!-- my articles -->
+                    <div class="flex justify-center gap-2 items-center w-[full] h-[10%] hover:cursor-pointer hover:bg-white/10 rounded-md hover:border hover:border-white/20 hover:backdrop-blur-sm hover:shadow-md "
+                        [ngClass]="{
+                            'bg-white text-gray-700 shadow-md': activeItem === 'my-articles',
+                            'text-white hover:bg-white/10 hover:text-white': activeItem !== 'my-articles'
+                        }"
+                        (click)="activeItem = 'my-articles'"
+                    >
+                        <div class="flex w-[20%]">
+                            <span class="material-symbols-outlined text-3xl"
+                                [ngClass]="{ 'text-gray-700': activeItem === 'my-articles', 'text-white': activeItem !== 'my-articles' }"
+                            >
+                                news
+                            </span>
+                        </div>
+                        <div class="flex justify-start items-center w-[65%]"><span>My articles</span></div>
+
+                    </div>
+
+                    <!-- pending articles -->
+                    <div class="flex justify-center gap-2 items-center w-[full] h-[10%] hover:cursor-pointer hover:bg-white/10 rounded-md hover:border hover:border-white/20 hover:backdrop-blur-sm hover:shadow-md "
+                        [ngClass]="{
+                            'bg-white text-gray-700 shadow-md': activeItem === 'pending',
+                            'text-white hover:bg-white/10 hover:text-white': activeItem !== 'pending'
+                        }"
+                        (click)="activeItem = 'pending'"
+                    >
+                        <div class="flex w-[20%]">
+                            <span class="material-symbols-outlined text-3xl"
+                                [ngClass]="{ 'text-gray-700': activeItem === 'pending', 'text-white': activeItem !== 'pending' }"
+                            >
+                                rule
+                            </span>
+                        </div>
+                        <div class="flex justify-start items-center w-[65%]"><span>Pending</span></div>
+
+                    </div>
+
+                    <!-- logout -->
+                    <div class="flex justify-center gap-2 items-center w-[full] h-[10%] hover:cursor-pointer hover:bg-white/10 rounded-md hover:border hover:border-white/20 hover:backdrop-blur-sm hover:shadow-md "
+                        [ngClass]="{
+                            'bg-white text-gray-700 shadow-md': activeItem === 'logout',
+                            'text-white hover:bg-white/10 hover:text-white': activeItem !== 'logout'
+                        }"
+                        (click)="activeItem = 'logout'"
+                    
+                    >
+                        <div class="flex w-[20%]">
+                            <span class="material-symbols-outlined text-3xl"
+                                  [ngClass]="{ 'text-gray-700': activeItem === 'logout', 'text-white': activeItem !== 'logout' }"
+                            >
+                                logout
+                            </span>
+                        </div>
+                        <div class="flex justify-start items-center w-[65%]"><span>Logout</span></div>
+
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
         </div>
     </mat-sidenav>
 
