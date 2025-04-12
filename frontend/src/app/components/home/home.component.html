@@ -1,0 +1,14 @@
+<mat-sidenav-container class="example-container">
+    <mat-sidenav #sidenav mode="side" [(opened)]="sideBarOpened">
+        <div class="bg-red-400">
+            <h1 class="text-3xl font-bold underline text-center mt-10">
+                Sidenav Test
+              </h1>
+        </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+    <p><button mat-button (click)="sidenav.toggle()">></button></p>
+
+    </mat-sidenav-content>
+</mat-sidenav-container>
