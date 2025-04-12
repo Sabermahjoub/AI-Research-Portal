@@ -5,10 +5,14 @@
     left: 0;
     right: 0;
   }
-  
-  .example-events {
-    width: 300px;
-    height: 200px;
-    overflow: auto;
-    border: 1px solid #555;
+
+  .bg {
+    //background-color: #dc2626; /* Red color */
+    background-color: rgba(220, 38, 38, 0.9); /* Red with 90% opacity */
+    background-image: url('/images/bg1.PNG');
+    //background-position: 50% 10%;
+    background-blend-mode: multiply; 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
