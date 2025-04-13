@@ -1,6 +1,6 @@
 <mat-sidenav-container class="example-container">
-    <mat-sidenav #sidenav mode="side" [(opened)]="sideBarOpened">
-        <div class="p-2 bg m-0 absolute h-full w-[75%] flex-col">
+    <mat-sidenav class="!w-[20%]" #sidenav mode="side" [(opened)]="sideBarOpened">
+        <div class="p-3 bg m-0 absolute h-full w-full flex-col">
 
             <!-- App logo + name -->
             <div class="p-1 flex justify-center items-center h-[15%] ">
@@ -42,6 +42,8 @@
                             'text-white hover:bg-white/10 hover:text-white': activeItem !== 'home'
                         }"
                         (click)="activeItem = 'home'"
+                        [routerLink]="['/home/list']"
+
                     >
                         <div class="flex w-[20%]">
                             <span class="material-symbols-outlined text-3xl"
@@ -140,8 +142,24 @@
         </div>
     </mat-sidenav>
 
-    <mat-sidenav-content>
-    <p><button mat-button (click)="sidenav.toggle()">></button></p>
+    <mat-sidenav-content class="bg-gray-100 w-full">
+        <div class="h-[10%] flex justify-start">
+            <button class="flex justify-center items-center" mat-button (click)="sidenav.toggle()">
+                <span class="material-symbols-outlined">
+                    menu
+                </span>
+            </button>
+        </div>
+
+        <!--div [ngSwitch]="activeItem" class="p-4">
+            <app-list-publications *ngSwitchCase="'home'"></app-list-publications>
+        
+            <p *ngSwitchDefault>Select a menu item</p>
+        </div-->
+
+        <div class="h-[90%] m-0 p-0">
+            <router-outlet></router-outlet>
+        </div>
 
     </mat-sidenav-content>
 </mat-sidenav-container>
