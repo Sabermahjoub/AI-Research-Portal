@@ -1,0 +1,72 @@
+<div class="flex flex-col">
+
+    <!-- First div -->
+    <div class="p-2 h-[10%] w-full flex justify-between">
+        <!-- Component name -->
+        <div class="p-2 flex ml-20">
+            <span class="text-2xl font-serif text-red-800 font-thin">List of publications</span>
+        </div>
+    
+        <div class="flex justify-center items-center !mr-20">
+            <form>
+                <mat-form-field appearance="fill">
+                    <mat-label>Search</mat-label>
+                    <input matInput>
+                    <span matSuffix class="mr-3 material-symbols-outlined flex items-center">
+                        search
+                    </span>
+                </mat-form-field>
+            </form>
+        </div>
+    </div>
+
+    <!-- Second div -->
+    <div class="flex justify-center items-center p-2 h-[90%] w-full">
+
+        <div class="flex flex-col justify-center items-center gap-3 p-2  h-full w-full">
+            <div *ngFor="let j of items1" class="flex justify-start  p-2  gap-7 w-[90%]">
+                <div *ngFor="let i of items" class="relative w-[25%] mt-6">
+                <!-- Card container with shadow and rounded corners -->
+                    <mat-card class="overflow-visible bg-white rounded-xl shadow-lg" appearance="outlined">
+                        <!-- Image container with negative margin to create overlap -->
+                        <div class="relative mx-4 -mt-6">
+                        <img mat-card-image src="https://acrobatusers.com/assets/uploads/actions/pdf_accessibility1_0.jpeg" 
+                            alt="Photo of a Shiba Inu"
+                            class="w-full h-40 object-cover rounded-lg shadow-md">
+                        </div>
+                        
+                        <mat-card-header class="mt-2">
+                        <div mat-card-avatar class="example-header-image"></div>
+                        <mat-card-title class="flex justify-center items-center"><span class="font-extrabold">AI</span></mat-card-title>
+                        <mat-card-subtitle>The power of NLP in medicine <br> <span class="font-normal">Saber Mahjoub</span></mat-card-subtitle>
+                        </mat-card-header>
+                        
+                        <mat-card-content class="flex justify-center !p-4">
+                        <p class="text-gray-700 text-sm">
+                            Lorem ipsum dolor sit amet. Eos veniam totam non voluptatum laboriosam ut optio molestiae. Ea iure laboriosam eos repellendus earum et ipsam tenetur in optio magnam et soluta magni ut consectetur illum et quod aperiam.
+                        </p>
+                        </mat-card-content>
+                        
+                        <mat-card-actions class="px-4 pb-4 flex justify-between">
+                            <button mat-button class="flex justify-center items-center gap-1 rounded">
+                                <span class="material-symbols-outlined text-red-600">
+                                    heart_plus
+                                </span>
+                                <span>23</span>
+                            </button>
+                            <button mat-button class="flex justify-center items-center gap-1 rounded">
+                                <span class="material-symbols-outlined">
+                                    comment
+                                </span>
+                                <span>5</span>
+
+                            </button>
+
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+          </div>
+    </div>
+
+</div>
