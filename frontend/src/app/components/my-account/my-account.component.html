@@ -1,0 +1,116 @@
+<div class="max-w-full overflow-x-hidden">
+  <!-- Header -->
+  <div class="mb-4 px-6 pt-4">
+    <span class="text-2xl font-serif text-red-800 font-thin">My Account</span>
+  </div>
+
+  <!-- Content -->
+  <div class="grid grid-cols-1 lg:grid-cols-7 gap-6 px-6">
+    <!-- Left side - Form -->
+    <div class="lg:col-span-5 bg-white rounded-lg shadow-md p-6">
+      <div class="mb-4">
+        <h2 class="text-xl font-semibold text-gray-700">Edit Profile</h2>
+      </div>
+
+      <form>
+        <!-- Row 1 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div>
+            <label class="block text-xs text-gray-500 uppercase mb-1">COMPANY (DISABLED)</label>
+            <input type="text" value="Creative Code Inc." disabled
+              class="w-full p-2 border border-gray-300 rounded-md bg-gray-100 text-gray-600">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-500 uppercase mb-1">USERNAME</label>
+            <input type="text" value="michael93"
+              class="w-full p-2 border border-gray-300 rounded-md">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-500 uppercase mb-1">EMAIL ADDRESS</label>
+            <input type="email" value="michael@example.com"
+              class="w-full p-2 border border-gray-300 rounded-md">
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-xs text-gray-500 uppercase mb-1">FIRST NAME</label>
+            <input type="text" value="Mike"
+              class="w-full p-2 border border-gray-300 rounded-md">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-500 uppercase mb-1">LAST NAME</label>
+            <input type="text" value="Andrew"
+              class="w-full p-2 border border-gray-300 rounded-md">
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="w-full mb-4">
+          <label class="block text-xs text-gray-500 uppercase mb-1">ADDRESS</label>
+          <div class="relative">
+            <input type="text" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Ap 09"
+              class="w-full p-2 border border-gray-300 rounded-md pr-10">
+            <span class="absolute right-3 top-2 text-gray-400">
+              <mat-icon class="text-red-500">location_on</mat-icon>
+            </span>
+          </div>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="w-full mb-4">
+          <label class="block text-xs text-gray-500 uppercase mb-1">ABOUT ME</label>
+          <textarea rows="4" class="w-full p-2 border border-gray-300 rounded-md">Lamborghini Mercy, Your chick she so thirsty, I am in that two seat Lambo.</textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-end">
+          <button type="button" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+            Update Profile
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right side - Profile Card -->
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <!-- Profile Image -->
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+               alt="Profile background"
+               class="w-full h-40 object-cover">
+          <div class="absolute -bottom-10 left-1/2 transform -translate-x-1/2">
+            <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60"
+                 alt="Profile picture"
+                 class="w-20 h-20 rounded-full border-4 border-white">
+          </div>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="pt-12 pb-6 px-4 text-center">
+          <h3 class="text-xl font-semibold">Mike Andrew</h3>
+          <p class="text-gray-500 text-sm">&#64;michael93</p>
+
+          <p class="mt-4 text-sm text-gray-600">
+            "Lamborghini Mercy, Your chick she so thirsty, I am in that two seat Lambo."
+          </p>
+
+          <!-- Social Icons -->
+          <div class="flex justify-center gap-4 mt-4">
+            <a href="#" class="text-gray-400 hover:text-gray-600 rounded-full w-8 h-8 flex items-center justify-center border border-gray-200">
+              <span class="material-symbols-outlined text-sm">schedule</span>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-gray-600 rounded-full w-8 h-8 flex items-center justify-center border border-gray-200">
+              <span class="text-sm">𝕏</span>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-gray-600 rounded-full w-8 h-8 flex items-center justify-center border border-gray-200">
+              <span class="material-symbols-outlined text-sm">photo_camera</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

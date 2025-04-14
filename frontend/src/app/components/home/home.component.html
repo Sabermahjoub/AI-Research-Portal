@@ -1,4 +1,4 @@
-<mat-sidenav-container class="example-container">
+<mat-sidenav-container class="example-container !bg-gray-100">
     <mat-sidenav class="!w-[20%]" #sidenav mode="side" [(opened)]="sideBarOpened">
         <div class="p-3 bg m-0 absolute h-full w-full flex-col">
 
@@ -14,123 +14,115 @@
             <hr>
 
             <!-- My profile div -->
-             <!-- or _3 for women -->
-            <div class="w-[100%] h-[10%] flex justify-center items-center gap-2">
-                <div class="flex justify-center items-center w-[20%] h-[80%]">
-                    <span class="material-symbols-outlined text-white text-4xl">
+            <div class="w-full py-3 flex items-center gap-3 px-4">
+                <div class="flex justify-center items-center w-10 h-10 bg-white/20 rounded-full">
+                    <span class="material-symbols-outlined text-white text-2xl">
                         face
                     </span>
                 </div>
-                <div class="flex justify-center items-center w-[80%] h-[80%]">
-                    <span class="w-full text-center text-white font-extrabold">Mohamed Saber Mahjoub</span>
+                <div class="flex-1">
+                    <span class="text-white font-medium text-sm">Mohamed Saber Mahjoub</span>
                 </div>
-
             </div>
 
             <hr>
 
             <!-- Main container for the menu items -->
             <div class="w-full mb-6 justify-center items-center flex flex-col p-0 h-[70%]">
-                
+
                 <!-- App pages -->
                 <div class="flex flex-col w-[95%] h-[90%] p-1 gap-2">
 
                     <!-- Home -->
-                    <div class="flex justify-center gap-2 items-center w-[full] h-[10%] hover:cursor-pointer hover:bg-white/10 rounded-md hover:border hover:border-white/20 hover:backdrop-blur-sm hover:shadow-md "
+                    <div class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
                         [ngClass]="{
-                            'bg-white text-gray-700 shadow-md': activeItem === 'home',
-                            'text-white hover:bg-white/10 hover:text-white': activeItem !== 'home'
+                            'active-menu-item': activeItem === 'home',
+                            'text-white hover:bg-white/10': activeItem !== 'home'
                         }"
-                        (click)="activeItem = 'home'"
                         [routerLink]="['/home/list']"
-
+                        (click)="activeItem = 'home'"
                     >
-                        <div class="flex w-[20%]">
-                            <span class="material-symbols-outlined text-3xl"
+                        <div class="flex items-center justify-center w-8 h-8">
+                            <span class="material-symbols-outlined"
                                 [ngClass]="{ 'text-gray-700': activeItem === 'home', 'text-white': activeItem !== 'home' }"
                             >
                                 home
                             </span>
                         </div>
-                        <div class="flex justify-start items-center w-[65%]"><span>Home</span></div>
-
+                        <div class="ml-2"><span>Home</span></div>
                     </div>
 
                     <!-- My account -->
-                    <div class="flex justify-center gap-2 items-center w-[full] h-[10%] hover:cursor-pointer hover:bg-white/10 rounded-md hover:border hover:border-white/20 hover:backdrop-blur-sm hover:shadow-md "
+                    <div class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
                         [ngClass]="{
-                            'bg-white text-gray-700 shadow-md': activeItem === 'manage-accounts',
-                            'text-white hover:bg-white/10 hover:text-white': activeItem !== 'manage-accounts'
+                            'active-menu-item': activeItem === 'manage-accounts',
+                            'text-white hover:bg-white/10': activeItem !== 'manage-accounts'
                         }"
+                        [routerLink]="['/home/my-account']"
                         (click)="activeItem = 'manage-accounts'"
                     >
-                        <div class="flex w-[20%]">
-                            <span class="material-symbols-outlined text-3xl"
+                        <div class="flex items-center justify-center w-8 h-8">
+                            <span class="material-symbols-outlined"
                                 [ngClass]="{ 'text-gray-700': activeItem === 'manage-accounts', 'text-white': activeItem !== 'manage-accounts' }"
                             >
                                 manage_accounts
                             </span>
                         </div>
-                        <div class="flex justify-start items-center w-[65%]"><span>My account</span></div>
-
+                        <div class="ml-2"><span>My account</span></div>
                     </div>
 
                     <!-- my articles -->
-                    <div class="flex justify-center gap-2 items-center w-[full] h-[10%] hover:cursor-pointer hover:bg-white/10 rounded-md hover:border hover:border-white/20 hover:backdrop-blur-sm hover:shadow-md "
+                    <div class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
                         [ngClass]="{
-                            'bg-white text-gray-700 shadow-md': activeItem === 'my-articles',
-                            'text-white hover:bg-white/10 hover:text-white': activeItem !== 'my-articles'
+                            'active-menu-item': activeItem === 'my-articles',
+                            'text-white hover:bg-white/10': activeItem !== 'my-articles'
                         }"
                         (click)="activeItem = 'my-articles'"
                     >
-                        <div class="flex w-[20%]">
-                            <span class="material-symbols-outlined text-3xl"
+                        <div class="flex items-center justify-center w-8 h-8">
+                            <span class="material-symbols-outlined"
                                 [ngClass]="{ 'text-gray-700': activeItem === 'my-articles', 'text-white': activeItem !== 'my-articles' }"
                             >
-                                news
+                                description
                             </span>
                         </div>
-                        <div class="flex justify-start items-center w-[65%]"><span>My articles</span></div>
-
+                        <div class="ml-2"><span>My articles</span></div>
                     </div>
 
                     <!-- pending articles -->
-                    <div class="flex justify-center gap-2 items-center w-[full] h-[10%] hover:cursor-pointer hover:bg-white/10 rounded-md hover:border hover:border-white/20 hover:backdrop-blur-sm hover:shadow-md "
+                    <div class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
                         [ngClass]="{
-                            'bg-white text-gray-700 shadow-md': activeItem === 'pending',
-                            'text-white hover:bg-white/10 hover:text-white': activeItem !== 'pending'
+                            'active-menu-item': activeItem === 'pending',
+                            'text-white hover:bg-white/10': activeItem !== 'pending'
                         }"
                         (click)="activeItem = 'pending'"
                     >
-                        <div class="flex w-[20%]">
-                            <span class="material-symbols-outlined text-3xl"
+                        <div class="flex items-center justify-center w-8 h-8">
+                            <span class="material-symbols-outlined"
                                 [ngClass]="{ 'text-gray-700': activeItem === 'pending', 'text-white': activeItem !== 'pending' }"
                             >
                                 rule
                             </span>
                         </div>
-                        <div class="flex justify-start items-center w-[65%]"><span>Pending</span></div>
-
+                        <div class="ml-2"><span>Pending</span></div>
                     </div>
 
                     <!-- logout -->
-                    <div class="flex justify-center gap-2 items-center w-[full] h-[10%] hover:cursor-pointer hover:bg-white/10 rounded-md hover:border hover:border-white/20 hover:backdrop-blur-sm hover:shadow-md "
+                    <div class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
                         [ngClass]="{
-                            'bg-white text-gray-700 shadow-md': activeItem === 'logout',
-                            'text-white hover:bg-white/10 hover:text-white': activeItem !== 'logout'
+                            'active-menu-item': activeItem === 'logout',
+                            'text-white hover:bg-white/10': activeItem !== 'logout'
                         }"
                         (click)="activeItem = 'logout'"
-                    
                     >
-                        <div class="flex w-[20%]">
-                            <span class="material-symbols-outlined text-3xl"
+                        <div class="flex items-center justify-center w-8 h-8">
+                            <span class="material-symbols-outlined"
                                   [ngClass]="{ 'text-gray-700': activeItem === 'logout', 'text-white': activeItem !== 'logout' }"
                             >
                                 logout
                             </span>
                         </div>
-                        <div class="flex justify-start items-center w-[65%]"><span>Logout</span></div>
-
+                        <div class="ml-2"><span>Logout</span></div>
                     </div>
 
 
@@ -142,23 +134,19 @@
         </div>
     </mat-sidenav>
 
-    <mat-sidenav-content class="bg-gray-100 w-full">
-        <div class="h-[10%] flex justify-start">
-            <button class="flex justify-center items-center" mat-button (click)="sidenav.toggle()">
+    <mat-sidenav-content>
+        <div class="h-[50px] flex justify-start items-center border-b border-gray-200">
+            <button class="flex justify-center items-center ml-4" mat-button (click)="sidenav.toggle()">
                 <span class="material-symbols-outlined">
                     menu
                 </span>
             </button>
         </div>
 
-        <!--div [ngSwitch]="activeItem" class="p-4">
-            <app-list-publications *ngSwitchCase="'home'"></app-list-publications>
-        
-            <p *ngSwitchDefault>Select a menu item</p>
-        </div-->
-
-        <div class="h-[90%] m-0 p-0">
-            <router-outlet></router-outlet>
+        <div class="overflow-auto" style="height: calc(100% - 50px);">
+            <div class="w-full">
+                <router-outlet></router-outlet>
+            </div>
         </div>
 
     </mat-sidenav-content>

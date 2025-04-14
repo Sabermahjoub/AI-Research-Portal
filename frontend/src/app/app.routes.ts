@@ -1,13 +1,14 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { ListPublicationsComponent } from './components/list-publications/list-publications.component';
+import { MyAccountComponent } from './components/my-account/my-account.component';
 
 import { LoginComponent } from './components/auth/login/login.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 
 export const routes: Routes = [
-    // {   path : '', 
-    //     component : HomeComponent,     
+    // {   path : '',
+    //     component : HomeComponent,
     //     children: [
     //         { path: 'publications', component: ListPublicationsComponent }
     //     ]
@@ -24,6 +25,7 @@ export const routes: Routes = [
       component: HomeComponent,
       children: [
         { path: 'list', component: ListPublicationsComponent },
+        { path: 'my-account', component: MyAccountComponent },
         // add more children as needed
       ]
     }
