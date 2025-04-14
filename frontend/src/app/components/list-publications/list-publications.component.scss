@@ -1,8 +1,29 @@
-.example-card {
-    max-width: 400px;
+// Card styles
+.bg-white {
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
-  
-.example-header-image {
-    background-image: url('https://media.istockphoto.com/id/1364917563/photo/businessman-smiling-with-arms-crossed-on-white-background.jpg?s=1024x1024&w=is&k=20&c=O_h1ic7M0SWTC40NVzYUTLWE2Yy8511S8QPUGEUT9tE=');
-    background-size: cover;
+
+// Fix for material icons
+.material-symbols-outlined {
+  font-size: 18px !important;
+  height: 18px !important;
+  width: 18px !important;
+  line-height: 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+// Ensure the action buttons stay within the card
+.flex.justify-between {
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 8px;
+}
+
+// Ensure the card has a minimum height
+.h-full {
+  min-height: 320px;
 }
