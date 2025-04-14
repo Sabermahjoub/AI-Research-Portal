@@ -1,11 +1,9 @@
-// Card styles
 .bg-white {
   position: relative;
   display: flex;
   flex-direction: column;
 }
 
-// Fix for material icons
 .material-symbols-outlined {
   font-size: 18px !important;
   height: 18px !important;
@@ -16,14 +14,12 @@
   justify-content: center !important;
 }
 
-// Ensure the action buttons stay within the card
 .flex.justify-between {
   width: 100%;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   margin-top: 8px;
 }
 
-// Ensure the card has a minimum height
 .h-full {
   min-height: 320px;
 }

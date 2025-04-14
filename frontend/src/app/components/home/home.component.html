@@ -1,5 +1,5 @@
-<mat-sidenav-container class="example-container">
-    <mat-sidenav class="w-[250px]" #sidenav mode="side" [(opened)]="sideBarOpened">
+<mat-sidenav-container class="example-container !bg-gray-100">
+    <mat-sidenav class="!w-[20%]" #sidenav mode="side" [(opened)]="sideBarOpened">
         <div class="p-3 bg m-0 absolute h-full w-full flex-col">
 
             <!-- App logo + name -->
@@ -134,7 +134,7 @@
         </div>
     </mat-sidenav>
 
-    <mat-sidenav-content class="bg-gray-100">
+    <mat-sidenav-content>
         <div class="h-[50px] flex justify-start items-center border-b border-gray-200">
             <button class="flex justify-center items-center ml-4" mat-button (click)="sidenav.toggle()">
                 <span class="material-symbols-outlined">
