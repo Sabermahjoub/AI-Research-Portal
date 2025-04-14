@@ -33,13 +33,16 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     // Set active item based on current route
-    const currentUrl = this.router.url;
-    if (currentUrl.includes('/home/list')) {
-      this.activeItem = 'home';
-    } else if (currentUrl.includes('/home/my-account')) {
-      this.activeItem = 'manage-accounts';
-    } else {
-      this.activeItem = 'home';
-    }
+    // const currentUrl = this.router.url;
+    // if (currentUrl.includes('/home/list')) {
+    //   this.activeItem = 'home';
+    // } else if (currentUrl.includes('/home/my-account')) {
+    //   this.activeItem = 'manage-accounts';
+    // } 
+    // else if (currentUrl.includes('/home/my-publications')) {
+    //   this.activeItem = 'my-articles';
+    // } else {
+    //   this.activeItem = 'home';
+    // }
   }
 }

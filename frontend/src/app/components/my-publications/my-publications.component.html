@@ -1,8 +1,17 @@
 <div class="p-4 w-full">
     <!-- Header -->
-    <div class="mb-4 flex ">
-        <div>
-            <span class="text-2xl font-serif text-red-800 font-thin">List of publications</span>
+    <div class="mb-1 flex">
+        <div class="flex w-[30%]">
+            <div class="flex w-[60%]">
+                <span class="w-full text-2xl font-serif text-red-800 font-thin">My publications</span>
+            </div>
+            <div class="w-[20%] flex justify-center">
+                <button mat-flat-button class="!bg-green-700">
+                    <span class="material-symbols-outlined text-8xl">
+                        note_add
+                    </span>
+                </button>
+            </div>
         </div>
         <div class="flex-grow"></div>
         <div>
@@ -19,14 +28,22 @@
        
     </div>
 
+    <div class="mb-4 flex">
+        <p class="font-extralight text-black font-mono">You have 4 approved publications</p>
+    </div>
+    
+
 
     <!-- Content -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6">
-        <div *ngFor="let i of [1,2,3,4,5,6,7,8]" class="hover:cursor-pointer relative mb-2">
+        <div *ngFor="let i of [1,2,3,4]" class="hover:cursor-pointer relative mb-2">
             <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col">
                 
-                <div class="bg-red-50 px-4 py-2 text-xs text-gray-500 border-b border-gray-200">
-                    <span>AI</span>
+                <div class="flex flex-grow justify-center items-center bg-red-50 px-4 py-2 text-xs text-gray-500 border-b border-gray-200">
+                    <span class="w-[60%]">AI</span>
+                    <div class="h-[80%] flex justify-end w-[40%]">
+                        <mat-icon class="text-red-500 hover:text-red-400">delete</mat-icon>                          
+                    </div>
                 </div>
 
                 <!-- Image container with negative margin to create overlap -->
