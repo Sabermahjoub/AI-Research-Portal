@@ -1,0 +1,94 @@
+<div
+  class="w-full h-screen bg-cover bg-center flex justify-center items-center"
+  style="background-image: url('assets/images/bg_dark.png');"
+>
+  <div
+    class="bg-white/90 p-10 rounded-2xl shadow-2xl w-[90%] max-w-md"
+  >
+    <!-- Logo & App Name -->
+    <div class="flex flex-col items-center mb-6">
+      <img
+        src="assets/images/logo3.png"
+        alt="Logo CoreAI"
+        class="w-40 h-40 mb-4"
+      />
+      <h1 class="text-3xl font-bold text-red-700 drop-shadow">Créer un compte CoreAI</h1>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="onSignup()" #signupForm="ngForm" class="space-y-6 text-gray-800">
+      <!-- Nom complet -->
+      <div>
+        <label class="block font-semibold mb-1 text-gray-700">Nom complet</label>
+        <div
+          class="flex items-center border border-gray-500 rounded-md px-3 py-2 bg-red-50"
+        >
+          <span class="material-symbols-outlined text-gray-500 mr-2">person</span>
+          <input
+            type="text"
+            name="name"
+            [(ngModel)]="name"
+            required
+            class="w-full focus:outline-none bg-transparent text-gray-800 placeholder-gray-500"
+            placeholder="Votre nom complet"
+          />
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="block font-semibold mb-1 text-gray-700">Email</label>
+        <div
+          class="flex items-center border border-gray-500 rounded-md px-3 py-2 bg-red-50"
+        >
+          <span class="material-symbols-outlined text-gray-500 mr-2">mail</span>
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            required
+            class="w-full focus:outline-none bg-transparent text-gray-800 placeholder-gray-500"
+            placeholder="ex: utilisateur@coreai.com"
+          />
+        </div>
+      </div>
+
+      <!-- Mot de passe -->
+      <div>
+        <label class="block font-semibold mb-1 text-gray-700">Mot de passe</label>
+        <div
+          class="flex items-center border border-gray-500 rounded-md px-3 py-2 bg-red-50"
+        >
+          <span class="material-symbols-outlined text-gray-500 mr-2">lock</span>
+          <input
+            type="password"
+            name="password"
+            [(ngModel)]="password"
+            required
+            class="w-full focus:outline-none bg-transparent text-gray-800 placeholder-gray-500"
+            placeholder="Choisissez un mot de passe"
+          />
+        </div>
+      </div>
+
+      <!-- Submit button -->
+      <button
+        type="submit"
+        class="w-full bg-red-700 hover:bg-red-600 text-white py-2 rounded-md transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+        [disabled]="!signupForm.form.valid"
+      >
+        S'inscrire
+      </button>
+    </form>
+
+    <!-- Lien vers la page de connexion -->
+    <div class="text-center mt-4 text-sm text-gray-800">
+      Vous avez déjà un compte ?
+      <a
+        href="/login"
+        class="text-red-700 font-semibold hover:underline hover:text-gray-600"
+        >Se connecter</a
+      >
+    </div>
+  </div>
+</div>
