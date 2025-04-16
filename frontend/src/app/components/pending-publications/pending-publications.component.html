@@ -1,16 +1,9 @@
 <div class="p-4 w-full">
     <!-- Header -->
-    <div class="mb-1 flex">
-        <div class="flex w-[30%]">
-            <div class="flex w-[60%]">
-                <span class="w-full text-2xl font-serif text-red-800 font-thin">My publications</span>
-            </div>
-            <div class="w-[20%] flex justify-center">
-                <button mat-flat-button class="!bg-green-700">
-                    <span class="material-symbols-outlined !text-8xl">
-                        add_notes
-                    </span>
-                </button>
+    <div class="mb-1 flex justify-center items-center">
+        <div class="flex justify-center items-center w-[30%]">
+            <div class="flex w-full">
+                <span class="w-full text-2xl font-serif text-red-800 font-thin">Pending publications</span>
             </div>
         </div>
         <div class="flex-grow"></div>
@@ -29,7 +22,7 @@
     </div>
 
     <div class="mb-4 flex">
-        <p class="font-extralight text-black font-mono">You have 4 approved publications</p>
+        <p class="font-extralight text-black font-mono">There are 4 pending publications</p>
     </div>
     
 
@@ -39,11 +32,8 @@
         <div *ngFor="let i of [1,2,3,4]" class="hover:cursor-pointer relative mb-2">
             <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col">
                 
-                <div class="flex flex-grow justify-center items-center bg-red-50 px-4 py-2 text-xs text-gray-500 border-b border-gray-200">
+                <div class="flex items-center bg-red-50 px-4 py-2 text-xs text-gray-500 border-b border-gray-200">
                     <span class="w-[60%]">AI</span>
-                    <div class="h-[80%] flex justify-end w-[40%]">
-                        <mat-icon class="text-red-500 hover:text-red-400">delete</mat-icon>                          
-                    </div>
                 </div>
 
                 <!-- Image container with negative margin to create overlap -->
@@ -78,17 +68,15 @@
 
                     <!-- Actions -->
                     <div class="flex justify-between items-center mt-auto pt-2">
-                        <button class="flex items-center gap-1 text-gray-600 hover:text-red-600 px-2 py-1 rounded">
-                            <span class="material-symbols-outlined text-red-600 text-sm">
-                                heart_plus
+                        <button class="flex items-center px-2 py-1 rounded">
+                            <span class="material-symbols-outlined text-green-900">
+                                check
                             </span>
-                            <span>23</span>
                         </button>
-                        <button class="flex items-center gap-1 text-gray-600 hover:text-gray-800 px-2 py-1 rounded">
-                            <span class="material-symbols-outlined text-sm">
-                                comment
+                        <button class="flex items-center px-2 py-1 rounded">
+                            <span class="material-symbols-outlined text-red-700">
+                                close
                             </span>
-                            <span>5</span>
                         </button>
                     </div>
                 </div>
