@@ -6,6 +6,7 @@ import { MyPublicationsComponent } from './components/my-publications/my-publica
 
 import { LoginComponent } from './components/auth/login/login.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
+import { PendingPublicationsComponent } from './components/pending-publications/pending-publications.component';
 
 export const routes: Routes = [
     // {   path : '',
@@ -28,6 +29,7 @@ export const routes: Routes = [
         { path: 'list', component: ListPublicationsComponent },
         { path: 'my-account', component: MyAccountComponent },
         { path: 'my-publications', component: MyPublicationsComponent },
+        { path: 'pending-publications', component: PendingPublicationsComponent }
 
       ]
     }
