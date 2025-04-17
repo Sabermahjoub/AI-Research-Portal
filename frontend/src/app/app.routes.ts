@@ -7,6 +7,7 @@ import { MyPublicationsComponent } from './components/my-publications/my-publica
 import { LoginComponent } from './components/auth/login/login.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 import { PendingPublicationsComponent } from './components/pending-publications/pending-publications.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component'; 
 
 export const routes: Routes = [
     // {   path : '',
@@ -16,9 +17,10 @@ export const routes: Routes = [
     //     ]
     // },
     // { path : 'publications', component : ListPublicationsComponent}
-    { path: '', redirectTo: '/home/list', pathMatch: 'full' },
+    { path: '', redirectTo: 'CoreAI', pathMatch: 'full' },
 
     // Login & Sign Up Routes 
+    { path: 'CoreAI', component: LandingPageComponent },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
 
