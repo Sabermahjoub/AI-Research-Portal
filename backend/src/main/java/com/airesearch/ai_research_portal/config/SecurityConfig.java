@@ -28,6 +28,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/users/register", "/users/login").permitAll()
+                        .requestMatchers("/commentaires/**").hasRole("CHERCHEUR")
                         .requestMatchers("/users/update").authenticated() // <-- AJOUTE CECI
                         .anyRequest().authenticated()
                 );

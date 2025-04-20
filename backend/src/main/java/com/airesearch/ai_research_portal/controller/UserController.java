@@ -1,17 +1,16 @@
 package com.airesearch.ai_research_portal.controller;
 
+import com.airesearch.ai_research_portal.model.Chercheur;
 import com.airesearch.ai_research_portal.model.User;
+import com.airesearch.ai_research_portal.repository.UserRepo;
+import com.airesearch.ai_research_portal.service.ChercheurService;
 import com.airesearch.ai_research_portal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
-import com.airesearch.ai_research_portal.model.User;
-import com.airesearch.ai_research_portal.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "users")
@@ -20,10 +19,16 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    @Autowired
+    private UserRepo userepository;
+
+    @Autowired
+    private ChercheurService chercheurService;
+
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
+    public Chercheur register(@RequestBody Chercheur user) {
         System.out.println(user);
-        return service.register(user);
+        return chercheurService.register(user);
     }
 
     @PutMapping("/update")
@@ -40,4 +45,10 @@ public class UserController {
         // Return JWT token upon successful login
         return service.verify(user);
     }
+
+    @GetMapping
+    public List<User> getUsers() {
+        return userepository.findAll();
+    }
+
 }
