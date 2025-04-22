@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/register", "/users/login","/chercheurs").permitAll()
+                        .requestMatchers("/users/register", "/users/login","/chercheurs","/publications/getAll").permitAll()
                         .requestMatchers("/commentaires/**").hasRole("CHERCHEUR")
                         .requestMatchers("/users/update").authenticated() // <-- AJOUTE CECI
                         .anyRequest().authenticated()
