@@ -39,7 +39,8 @@ public class ChercheurService {
     // Méthode d'enregistrement de l'utilisateur
     public Chercheur register(Chercheur user) {
         user.setPassword(encoder.encode(user.getPassword()));
-        return chercheurRepository.save(user);
+        chercheurRepository.save(user);
+        return user;
     }
 
     // Méthode de mise à jour d'un utilisateur
@@ -79,7 +80,7 @@ public class ChercheurService {
             authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, Collections.singletonList(new SimpleGrantedAuthority(roleName)));
 
             // Retourner le token JWT généré
-            return jwtService.generateToken(user.getUsername(), role.name());
+            return jwtService.generateToken(user.getUsername());
         }
 
         // Si l'authentification échoue, retourner une réponse d'échec
