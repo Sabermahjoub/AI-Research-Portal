@@ -72,6 +72,7 @@ public class ChercheurService {
             // Récupérer le rôle de l'utilisateur
             Chercheur authenticatedUser = chercheurRepository.findByUsername(user.getUsername());
             Role role = authenticatedUser.getRole();
+            System.out.println("ID = " + authenticatedUser.getId());
 
             // Ajouter l'autorité avec le rôle
             String roleName = "ROLE_" + role.name();  // Utilisation de name() pour obtenir la valeur du rôle sous forme de chaîne
@@ -80,7 +81,7 @@ public class ChercheurService {
             authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, Collections.singletonList(new SimpleGrantedAuthority(roleName)));
 
             // Retourner le token JWT généré
-            return jwtService.generateToken(user.getUsername());
+            return jwtService.generateToken(user.getUsername(), role.name(),authenticatedUser.getId());
         }
 
         // Si l'authentification échoue, retourner une réponse d'échec

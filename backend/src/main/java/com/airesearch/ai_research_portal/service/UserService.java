@@ -70,7 +70,7 @@ public class UserService {
             authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, Collections.singletonList(new SimpleGrantedAuthority(roleName)));
 
             // Retourner le token JWT généré
-            return jwtService.generateToken(user.getUsername());
+            return jwtService.generateToken(user.getUsername(),role.name(),authenticatedUser.getId());
         }
 
         // Si l'authentification échoue, retourner une réponse d'échec
