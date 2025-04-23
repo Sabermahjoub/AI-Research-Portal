@@ -21,20 +21,20 @@
       #loginForm="ngForm"
       class="space-y-6 text-gray-800"
     >
-      <!-- Email -->
+      <!-- Username -->
       <div>
-        <label class="block font-semibold mb-1 text-gray-700">Email</label>
+        <label class="block font-semibold mb-1 text-gray-700">Nom d'utilisateur</label>
         <div
           class="flex items-center border border-gray-500 rounded-md px-3 py-2 bg-red-50"
         >
-          <span class="material-symbols-outlined text-gray-500 mr-2">mail</span>
+          <span class="material-symbols-outlined text-gray-500 mr-2">account_circle</span>
           <input
-            type="email"
-            name="email"
-            [(ngModel)]="email"
+            type="text"
+            name="username"
+            [(ngModel)]="username"
             required
             class="w-full focus:outline-none bg-transparent text-gray-800 placeholder-gray-500"
-            placeholder="ex: user@coreai.com"
+            placeholder="Votre nom d'utilisateur"
           />
         </div>
       </div>
@@ -60,10 +60,21 @@
       <!-- Submit button -->
       <button
         type="submit"
-        class="w-full bg-red-700 hover:bg-red-600 text-white py-2 rounded-md transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-        [disabled]="!loginForm.form.valid"
+        class="w-full bg-red-700 hover:bg-red-600 text-white py-2 rounded-md transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 flex justify-center items-center"
+        [disabled]="!loginForm.form.valid || isLoading"
       >
-        Se connecter
+        <span *ngIf="isLoading" class="material-symbols-outlined animate-spin mr-2">progress_activity</span>
+        <span>Se connecter</span>
+      </button>
+
+      <!-- Guest button -->
+      <button
+        type="button"
+        (click)="continueAsGuest()"
+        class="mt-4 w-full bg-red-100 hover:bg-red-200 text-red-700 py-2 rounded-md transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-opacity-50 flex justify-center items-center"
+      >
+        <span class="material-symbols-outlined mr-2">person_outline</span>
+        <span>Continuer en tant qu'invité</span>
       </button>
     </form>
 
@@ -71,7 +82,7 @@
     <div class="text-center mt-6 text-sm text-gray-800">
       Vous n'avez pas de compte ?
       <a
-        href="/signup"
+        routerLink="/signup"
         class="text-red-700 font-semibold hover:underline hover:text-gray-600"
         >Créer un compte</a
       >

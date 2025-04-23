@@ -4,30 +4,35 @@
     <span class="text-2xl font-serif text-red-800 font-thin">My Account</span>
   </div>
 
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="flex justify-center items-center py-8">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-700"></div>
+  </div>
+
   <!-- Content -->
-  <div class="grid grid-cols-1 lg:grid-cols-7 gap-6 px-6">
+  <div *ngIf="!isLoading" class="grid grid-cols-1 lg:grid-cols-7 gap-6 px-6">
     <!-- Left side - Form -->
     <div class="lg:col-span-5 bg-white rounded-lg shadow-md p-6">
       <div class="mb-4">
         <h2 class="text-xl font-semibold text-gray-700">Edit Profile</h2>
       </div>
 
-      <form>
+      <form (ngSubmit)="updateProfile()">
         <!-- Row 1 -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
-            <label class="block text-xs text-gray-500 uppercase mb-1">COMPANY (DISABLED)</label>
-            <input type="text" value="Creative Code Inc." disabled
-              class="w-full p-2 border border-gray-300 rounded-md bg-gray-100 text-gray-600">
-          </div>
-          <div>
-            <label class="block text-xs text-gray-500 uppercase mb-1">USERNAME</label>
-            <input type="text" value="michael93"
+            <label class="block text-xs text-gray-500 uppercase mb-1">JOB TITLE</label>
+            <input type="text" [(ngModel)]="userData.jobTitle" name="jobTitle"
               class="w-full p-2 border border-gray-300 rounded-md">
           </div>
           <div>
+            <label class="block text-xs text-gray-500 uppercase mb-1">USERNAME</label>
+            <input type="text" [(ngModel)]="userData.username" name="username" readonly
+              class="w-full p-2 border border-gray-300 rounded-md bg-gray-100 text-gray-600">
+          </div>
+          <div>
             <label class="block text-xs text-gray-500 uppercase mb-1">EMAIL ADDRESS</label>
-            <input type="email" value="michael@example.com"
+            <input type="email" [(ngModel)]="userData.email" name="email"
               class="w-full p-2 border border-gray-300 rounded-md">
           </div>
         </div>
@@ -36,12 +41,12 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label class="block text-xs text-gray-500 uppercase mb-1">FIRST NAME</label>
-            <input type="text" value="Mike"
+            <input type="text" [(ngModel)]="userData.firstName" name="firstName"
               class="w-full p-2 border border-gray-300 rounded-md">
           </div>
           <div>
             <label class="block text-xs text-gray-500 uppercase mb-1">LAST NAME</label>
-            <input type="text" value="Andrew"
+            <input type="text" [(ngModel)]="userData.lastName" name="lastName"
               class="w-full p-2 border border-gray-300 rounded-md">
           </div>
         </div>
@@ -50,7 +55,7 @@
         <div class="w-full mb-4">
           <label class="block text-xs text-gray-500 uppercase mb-1">ADDRESS</label>
           <div class="relative">
-            <input type="text" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Ap 09"
+            <input type="text" [(ngModel)]="userData.address" name="address"
               class="w-full p-2 border border-gray-300 rounded-md pr-10">
             <span class="absolute right-3 top-2 text-gray-400">
               <mat-icon class="text-red-500">location_on</mat-icon>
@@ -58,16 +63,29 @@
           </div>
         </div>
 
+        <!-- Row 4 -->
+        <div class="w-full mb-4">
+          <label class="block text-xs text-gray-500 uppercase mb-1">WORK ADDRESS</label>
+          <div class="relative">
+            <input type="text" [(ngModel)]="userData.workAddress" name="workAddress"
+              class="w-full p-2 border border-gray-300 rounded-md pr-10">
+            <span class="absolute right-3 top-2 text-gray-400">
+              <mat-icon class="text-red-500">business</mat-icon>
+            </span>
+          </div>
+        </div>
+
         <!-- Row 5 -->
         <div class="w-full mb-4">
           <label class="block text-xs text-gray-500 uppercase mb-1">ABOUT ME</label>
-          <textarea rows="4" class="w-full p-2 border border-gray-300 rounded-md">Lamborghini Mercy, Your chick she so thirsty, I am in that two seat Lambo.</textarea>
+          <textarea rows="4" [(ngModel)]="userData.about" name="about" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
         </div>
 
         <!-- Submit Button -->
         <div class="flex justify-end">
-          <button type="button" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
-            Update Profile
+          <button type="submit" [disabled]="isUpdating" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 flex items-center">
+            <span *ngIf="isUpdating" class="material-symbols-outlined animate-spin mr-2 text-sm">progress_activity</span>
+            <span>Update Profile</span>
           </button>
         </div>
       </form>
@@ -90,11 +108,12 @@
 
         <!-- Profile Info -->
         <div class="pt-12 pb-6 px-4 text-center">
-          <h3 class="text-xl font-semibold">Mike Andrew</h3>
-          <p class="text-gray-500 text-sm">&#64;michael93</p>
+          <h3 class="text-xl font-semibold">{{ userData.firstName }} {{ userData.lastName }}</h3>
+          <p class="text-gray-500 text-sm">&#64;{{ userData.username }}</p>
+          <p class="text-gray-500 text-xs mt-1">{{ userData.jobTitle }}</p>
 
           <p class="mt-4 text-sm text-gray-600">
-            "Lamborghini Mercy, Your chick she so thirsty, I am in that two seat Lambo."
+            "{{ userData.about || 'No bio provided yet.' }}"
           </p>
 
           <!-- Social Icons -->

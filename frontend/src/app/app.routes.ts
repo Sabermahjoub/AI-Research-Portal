@@ -6,6 +6,7 @@ import { MyPublicationsComponent } from './components/my-publications/my-publica
 
 import { LoginComponent } from './components/auth/login/login.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     // {   path : '',
@@ -15,21 +16,33 @@ export const routes: Routes = [
     //     ]
     // },
     // { path : 'publications', component : ListPublicationsComponent}
-    { path: '', redirectTo: '/home/list', pathMatch: 'full' },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
 
-    // Login & Sign Up Routes 
+    // Login & Sign Up Routes (public)
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
 
+    // Home routes - split into public and protected
     {
       path: 'home',
       component: HomeComponent,
       children: [
-        { path: 'list', component: ListPublicationsComponent },
-        { path: 'my-account', component: MyAccountComponent },
-        { path: 'my-publications', component: MyPublicationsComponent },
-
+        { path: '', redirectTo: 'list', pathMatch: 'full' },
+        { path: 'list', component: ListPublicationsComponent }, // Public route
+        {
+          path: 'my-account',
+          component: MyAccountComponent,
+          canActivate: [AuthGuard] // Protected route
+        },
+        {
+          path: 'my-publications',
+          component: MyPublicationsComponent,
+          canActivate: [AuthGuard] // Protected route
+        },
       ]
-    }
+    },
+
+    // Redirect any unknown paths to login
+    { path: '**', redirectTo: '/login' }
 
 ];

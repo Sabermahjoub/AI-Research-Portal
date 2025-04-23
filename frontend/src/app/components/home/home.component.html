@@ -21,7 +21,7 @@
                     </span>
                 </div>
                 <div class="flex-1">
-                    <span class="text-white font-medium text-sm">Mohamed Saber Mahjoub</span>
+                    <span class="text-white font-medium text-sm">{{ isAuthenticated ? (currentUser?.username || 'User') : 'Invité' }}</span>
                 </div>
             </div>
 
@@ -52,8 +52,8 @@
                         <div class="ml-2"><span>Home</span></div>
                     </div>
 
-                    <!-- My account -->
-                    <div class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
+                    <!-- My account - only shown when authenticated -->
+                    <div *ngIf="isAuthenticated" class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
                         [ngClass]="{
                             'active-menu-item': activeItem === 'manage-accounts',
                             'text-white hover:bg-white/10': activeItem !== 'manage-accounts'
@@ -72,7 +72,7 @@
                     </div>
 
                     <!-- my articles -->
-                    <div class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
+                    <div *ngIf="isAuthenticated" class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
                         [ngClass]="{
                             'active-menu-item': activeItem === 'my-articles',
                             'text-white hover:bg-white/10': activeItem !== 'my-articles'
@@ -108,22 +108,36 @@
                         <div class="ml-2"><span>Pending</span></div>
                     </div>
 
-                    <!-- logout -->
-                    <div class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
+                    <!-- logout - only shown when authenticated -->
+                    <div *ngIf="isAuthenticated" class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1 mt-auto"
                         [ngClass]="{
                             'active-menu-item': activeItem === 'logout',
                             'text-white hover:bg-white/10': activeItem !== 'logout'
                         }"
-                        (click)="activeItem = 'logout'"
+                        (click)="logout()"
                     >
                         <div class="flex items-center justify-center w-8 h-8">
-                            <span class="material-symbols-outlined"
-                                  [ngClass]="{ 'text-gray-700': activeItem === 'logout', 'text-white': activeItem !== 'logout' }"
-                            >
+                            <span class="material-symbols-outlined text-white">
                                 logout
                             </span>
                         </div>
                         <div class="ml-2"><span>Logout</span></div>
+                    </div>
+
+                    <!-- login - only shown when not authenticated -->
+                    <div *ngIf="!isAuthenticated" class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1 mt-auto"
+                        [ngClass]="{
+                            'active-menu-item': activeItem === 'login',
+                            'text-white hover:bg-white/10': activeItem !== 'login'
+                        }"
+                        (click)="navigateToLogin()"
+                    >
+                        <div class="flex items-center justify-center w-8 h-8">
+                            <span class="material-symbols-outlined text-white">
+                                login
+                            </span>
+                        </div>
+                        <div class="ml-2"><span>Se connecter</span></div>
                     </div>
 
 

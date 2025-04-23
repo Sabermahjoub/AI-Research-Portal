@@ -9,6 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(path = "domains")
+@CrossOrigin(origins = "http://localhost:4200") // Allow requests from Angular frontend
 public class DomainController {
     private DomainService domainService;
 

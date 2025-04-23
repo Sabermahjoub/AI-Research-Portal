@@ -16,21 +16,57 @@
     </div>
 
     <!-- Form -->
-    <form (ngSubmit)="onSignup()" #signupForm="ngForm" class="space-y-6 text-gray-800">
-      <!-- Nom complet -->
+    <form (ngSubmit)="onSignup()" #signupForm="ngForm" class="space-y-6 text-gray-800" novalidate>
+      <!-- Prénom -->
       <div>
-        <label class="block font-semibold mb-1 text-gray-700">Nom complet</label>
+        <label class="block font-semibold mb-1 text-gray-700">Prénom</label>
         <div
           class="flex items-center border border-gray-500 rounded-md px-3 py-2 bg-red-50"
         >
           <span class="material-symbols-outlined text-gray-500 mr-2">person</span>
           <input
             type="text"
-            name="name"
-            [(ngModel)]="name"
+            name="firstName"
+            [(ngModel)]="firstName"
             required
             class="w-full focus:outline-none bg-transparent text-gray-800 placeholder-gray-500"
-            placeholder="Votre nom complet"
+            placeholder="Votre prénom"
+          />
+        </div>
+      </div>
+
+      <!-- Nom de famille -->
+      <div>
+        <label class="block font-semibold mb-1 text-gray-700">Nom</label>
+        <div
+          class="flex items-center border border-gray-500 rounded-md px-3 py-2 bg-red-50"
+        >
+          <span class="material-symbols-outlined text-gray-500 mr-2">person</span>
+          <input
+            type="text"
+            name="lastName"
+            [(ngModel)]="lastName"
+            required
+            class="w-full focus:outline-none bg-transparent text-gray-800 placeholder-gray-500"
+            placeholder="Votre nom de famille"
+          />
+        </div>
+      </div>
+
+      <!-- Nom d'utilisateur -->
+      <div>
+        <label class="block font-semibold mb-1 text-gray-700">Nom d'utilisateur</label>
+        <div
+          class="flex items-center border border-gray-500 rounded-md px-3 py-2 bg-red-50"
+        >
+          <span class="material-symbols-outlined text-gray-500 mr-2">account_circle</span>
+          <input
+            type="text"
+            name="username"
+            [(ngModel)]="username"
+            required
+            class="w-full focus:outline-none bg-transparent text-gray-800 placeholder-gray-500"
+            placeholder="Choisissez un nom d'utilisateur"
           />
         </div>
       </div>
@@ -49,6 +85,57 @@
             required
             class="w-full focus:outline-none bg-transparent text-gray-800 placeholder-gray-500"
             placeholder="ex: utilisateur@coreai.com"
+          />
+        </div>
+      </div>
+
+      <!-- Adresse -->
+      <div>
+        <label class="block font-semibold mb-1 text-gray-700">Adresse</label>
+        <div
+          class="flex items-center border border-gray-500 rounded-md px-3 py-2 bg-red-50"
+        >
+          <span class="material-symbols-outlined text-gray-500 mr-2">home</span>
+          <input
+            type="text"
+            name="address"
+            [(ngModel)]="address"
+            class="w-full focus:outline-none bg-transparent text-gray-800 placeholder-gray-500"
+            placeholder="Votre adresse personnelle"
+          />
+        </div>
+      </div>
+
+      <!-- Adresse professionnelle -->
+      <div>
+        <label class="block font-semibold mb-1 text-gray-700">Adresse professionnelle</label>
+        <div
+          class="flex items-center border border-gray-500 rounded-md px-3 py-2 bg-red-50"
+        >
+          <span class="material-symbols-outlined text-gray-500 mr-2">business</span>
+          <input
+            type="text"
+            name="workAddress"
+            [(ngModel)]="workAddress"
+            class="w-full focus:outline-none bg-transparent text-gray-800 placeholder-gray-500"
+            placeholder="Votre adresse professionnelle"
+          />
+        </div>
+      </div>
+
+      <!-- Titre du poste -->
+      <div>
+        <label class="block font-semibold mb-1 text-gray-700">Titre du poste</label>
+        <div
+          class="flex items-center border border-gray-500 rounded-md px-3 py-2 bg-red-50"
+        >
+          <span class="material-symbols-outlined text-gray-500 mr-2">work</span>
+          <input
+            type="text"
+            name="jobTitle"
+            [(ngModel)]="jobTitle"
+            class="w-full focus:outline-none bg-transparent text-gray-800 placeholder-gray-500"
+            placeholder="Votre titre ou fonction"
           />
         </div>
       </div>
@@ -74,10 +161,20 @@
       <!-- Submit button -->
       <button
         type="submit"
-        class="w-full bg-red-700 hover:bg-red-600 text-white py-2 rounded-md transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-        [disabled]="!signupForm.form.valid"
+        class="w-full bg-red-700 hover:bg-red-600 text-white py-2 rounded-md transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 flex justify-center items-center"
+        [disabled]="isLoading"
       >
-        S'inscrire
+        <span *ngIf="isLoading" class="material-symbols-outlined animate-spin mr-2">progress_activity</span>
+        <span>S'inscrire</span>
+      </button>
+
+      <!-- Debug button - for testing only -->
+      <button
+        type="button"
+        class="mt-2 w-full bg-gray-500 hover:bg-gray-400 text-white py-2 rounded-md transition-all duration-300 ease-in-out"
+        (click)="onSignup()"
+      >
+        Test Inscription
       </button>
     </form>
 
@@ -85,7 +182,7 @@
     <div class="text-center mt-4 text-sm text-gray-800">
       Vous avez déjà un compte ?
       <a
-        href="/login"
+        routerLink="/login"
         class="text-red-700 font-semibold hover:underline hover:text-gray-600"
         >Se connecter</a
       >
