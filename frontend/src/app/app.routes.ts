@@ -16,7 +16,6 @@ export const routes: Routes = [
     //     ]
     // },
     // { path : 'publications', component : ListPublicationsComponent}
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
 
     // Login & Sign Up Routes (public)
     { path: 'login', component: LoginComponent },
