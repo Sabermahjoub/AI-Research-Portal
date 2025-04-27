@@ -29,17 +29,30 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/register", "/users/login","/chercheurs","/publications/getAll").permitAll()
-                        .requestMatchers("/commentaires/**").hasRole("CHERCHEUR")
-                        .requestMatchers("/users/update").authenticated() // <-- AJOUTE CECI
-                        .anyRequest().authenticated()
-                );
+        // Disable CSRF as we're using JWT
+        http.csrf(csrf -> csrf.disable());
+
+        // Configure CORS
+        http.cors(Customizer.withDefaults());
+
+        // Configure authorization rules
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/users/register", "/users/login","/chercheurs","/publications/getAll").permitAll()
+                .requestMatchers("/commentaires/**").hasRole("CHERCHEUR")
+                .requestMatchers("/users/update").authenticated()
+                .anyRequest().authenticated()
+        );
+
+        // Add JWT filter
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // Configure form login and basic auth (for development purposes)
         http.formLogin(Customizer.withDefaults());
         http.httpBasic(Customizer.withDefaults());
+
+        // Use stateless session management as we're using JWT
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         return http.build();
     }
 

@@ -7,6 +7,7 @@ import com.airesearch.ai_research_portal.service.ChercheurService;
 import com.airesearch.ai_research_portal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.cors.CorsConfiguration;
 
 
 import java.security.Principal;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "users")
+@CrossOrigin(origins = "http://localhost:4200") // Allow requests from Angular frontend
 public class UserController {
 
     @Autowired

@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/publications")
+@CrossOrigin(origins = "http://localhost:4200") // Allow requests from Angular frontend
 public class PublicationController {
 
     @Autowired

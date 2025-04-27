@@ -9,6 +9,7 @@ import { NgClass } from '@angular/common';
 
 //import { ListPublicationsComponent } from '../list-publications/list-publications.component';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -28,21 +29,42 @@ import { Router, RouterModule } from '@angular/router';
 export class HomeComponent implements OnInit {
   sideBarOpened: boolean = true; // Set to true to keep sidebar open by default
   activeItem: string = 'home';
+  currentUser: any;
+  isAuthenticated: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {
+    // Get current user from auth service
+    this.authService.currentUser.subscribe(user => {
+      this.currentUser = user;
+    });
+
+    // Get authentication status
+    this.authService.isAuthenticated().subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+    });
+  }
 
   ngOnInit() {
     // Set active item based on current route
-    // const currentUrl = this.router.url;
-    // if (currentUrl.includes('/home/list')) {
-    //   this.activeItem = 'home';
-    // } else if (currentUrl.includes('/home/my-account')) {
-    //   this.activeItem = 'manage-accounts';
-    // } 
-    // else if (currentUrl.includes('/home/my-publications')) {
-    //   this.activeItem = 'my-articles';
-    // } else {
-    //   this.activeItem = 'home';
-    // }
+    const currentUrl = this.router.url;
+    if (currentUrl.includes('/home/list')) {
+      this.activeItem = 'home';
+    } else if (currentUrl.includes('/home/my-account')) {
+      this.activeItem = 'manage-accounts';
+    } else if (currentUrl.includes('/home/my-publications')) {
+      this.activeItem = 'my-publications';
+    } else {
+      this.activeItem = 'home';
+    }
+  }
+
+  // Logout method
+  logout() {
+    this.authService.logout();
+  }
+
+  // Navigate to login page
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 }

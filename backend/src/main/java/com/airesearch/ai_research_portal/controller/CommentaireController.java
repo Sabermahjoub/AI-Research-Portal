@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/commentaires")
-
+@CrossOrigin(origins = "http://localhost:4200") // Allow requests from Angular frontend
 public class CommentaireController {
     @Autowired
     private CommentaireService commentaireService;

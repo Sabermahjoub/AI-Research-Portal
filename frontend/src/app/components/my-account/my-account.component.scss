@@ -1,1 +1,15 @@
-// Add any component-specific styles here
+// Snackbar styles
+::ng-deep .snackbar-error {
+  background-color: #b91c1c; // Rouge vif
+  color: white;
+}
+
+::ng-deep .snackbar-success {
+  background-color: #16a34a; // Vert
+  color: white;
+}
+
+::ng-deep .snackbar-info {
+  background-color: #3b82f6; // Bleu
+  color: white;
+}
