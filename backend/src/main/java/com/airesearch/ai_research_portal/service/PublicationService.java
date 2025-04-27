@@ -1,20 +1,30 @@
 package com.airesearch.ai_research_portal.service;
 
+import com.airesearch.ai_research_portal.model.Chercheur;
 import com.airesearch.ai_research_portal.model.Commentaire;
 import com.airesearch.ai_research_portal.model.Domain;
 import com.airesearch.ai_research_portal.model.Publication;
+import com.airesearch.ai_research_portal.repository.ChercheurRepository;
+import com.airesearch.ai_research_portal.repository.DomainRepository;
 import com.airesearch.ai_research_portal.repository.PublicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PublicationService {
 
     @Autowired
     private PublicationRepository pubRepo;
+
+    @Autowired
+    private DomainRepository domainRepository;
+
+    @Autowired
+    private ChercheurRepository chercheurRepository;
 
     public Publication getPublicationById(long idPublication) throws Exception {
         Optional<Publication> optionalPublication = this.pubRepo.findById(idPublication);
@@ -86,6 +96,24 @@ public class PublicationService {
         if (this.pubRepo.findById(publication.getId()).isPresent()){
             throw new RuntimeException("Publication already exists ");
         }
+        List<Long> domainIds = publication.getDomains()
+                                          .stream()
+                                          .map(Domain::getDomainId)
+                                          .collect(Collectors.toList());
+
+        // Fetch the real Domain objects from DB
+        List<Domain> existingDomains = domainRepository.findAllById(domainIds);
+
+        // Associate only existing domains
+        publication.setDomains(existingDomains);
+
+        List<Long> chercheursIds = publication.getTeam()
+                                          .stream()
+                                          .map(Chercheur::getId)
+                                          .collect(Collectors.toList());
+        List<Chercheur> existingChercheurs = chercheurRepository.findAllById(chercheursIds);
+
+        publication.setTeam(existingChercheurs);
         return this.pubRepo.save(publication);
     }
 
