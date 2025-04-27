@@ -1,5 +1,6 @@
 package com.airesearch.ai_research_portal.service;
 
+import com.airesearch.ai_research_portal.model.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -33,18 +34,17 @@ public class JWTService {
         }
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role,Long id) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
+        claims.put("UserId", id);
         return Jwts.builder()
-                .claims()
-                .add(claims)
+                .claims(claims)  // Set all claims at once
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
-                .and()
                 .signWith(getKey())
                 .compact();
-
     }
 
     private SecretKey getKey() {

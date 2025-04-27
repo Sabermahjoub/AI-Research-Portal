@@ -1,6 +1,13 @@
-import { AuthGuard } from './guards/auth.guard';
+import { Routes } from '@angular/router';
+import { HomeComponent } from './components/home/home.component';
+import { ListPublicationsComponent } from './components/list-publications/list-publications.component';
+import { MyAccountComponent } from './components/my-account/my-account.component';
+import { MyPublicationsComponent } from './components/my-publications/my-publications.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { SignupComponent } from './components/auth/signup/signup.component';
 import { PendingPublicationsComponent } from './components/pending-publications/pending-publications.component';
-import { LandingPageComponent } from './components/landing-page/landing-page.component'; 
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'CoreAI', pathMatch: 'full' },
@@ -27,7 +34,7 @@ export const routes: Routes = [
           path: 'my-publications',
           component: MyPublicationsComponent,
           canActivate: [AuthGuard] // Protected route
-        },
+        }
       ]
     },
 

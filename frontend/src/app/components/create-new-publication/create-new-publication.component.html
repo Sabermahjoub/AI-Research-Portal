@@ -1,0 +1,302 @@
+    <div class="bg-white rounded-xl shadow-lg max-h-[90vh] overflow-hidden flex flex-col">
+      <!-- Header with gradient background -->
+      <div class="bg-gradient-to-r from-red-800 to-red-600 px-8 py-6">
+        <h2 class="text-2xl font-serif text-white font-medium tracking-wide flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          Add New Publication
+        </h2>
+        <p class="mt-1 text-red-100">Share your research with the scientific community</p>
+      </div>
+      
+      <div class="px-8 py-6 !overflow-y-scroll flex-1">
+        <form [formGroup]="publicationForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+          <!-- Progress indicator -->
+          <div class="w-full bg-gray-100 rounded-full h-1.5 mb-6">
+            <div class="bg-red-600 h-1.5 rounded-full transition-all duration-300"
+                 [style.width]="getFormProgress() + '%'"></div>
+          </div>
+          
+          <!-- Title Field -->
+          <div class="relative">
+            <label for="title" class="absolute -top-2.5 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-600">
+              Title<span class="text-red-500">*</span>
+            </label>
+            <input 
+              id="title"
+              type="text"
+              formControlName="title"
+              placeholder="Enter a descriptive title for your publication"
+              class="mt-1 block w-full px-4 py-3 border-2 rounded-lg focus:ring-0 transition duration-200
+                    {{publicationForm.get('title')?.invalid && publicationForm.get('title')?.touched ? 
+                      'border-red-400 focus:border-red-500' : 
+                      'border-gray-200 focus:border-red-600'}}"
+            >
+            <p *ngIf="publicationForm.get('title')?.invalid && publicationForm.get('title')?.touched" 
+               class="mt-1 text-sm text-red-600 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Please provide a title for your publication
+            </p>
+          </div>
+          
+          <!-- Category Field with custom dropdown -->
+          <div class="relative">
+            <label for="category" class="absolute -top-2.5 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-600">
+              Category<span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select
+                id="category"
+                formControlName="category"
+                class="mt-1 block w-full px-4 py-3 border-2 rounded-lg focus:ring-0 transition duration-200 appearance-none
+                      {{publicationForm.get('category')?.invalid && publicationForm.get('category')?.touched ? 
+                        'border-red-400 focus:border-red-500' : 
+                        'border-gray-200 focus:border-red-600'}}"
+              >
+                <option value="" disabled selected>Select the most relevant category</option>
+                <option value="AI">Artificial Intelligence</option>
+                <option value="ML">Machine Learning</option>
+                <option value="NLP">Natural Language Processing</option>
+                <option value="Medicine">Medicine</option>
+                <option value="CS">Computer Science</option>
+                <option value="Biology">Biology</option>
+                <option value="Physics">Physics</option>
+                <option value="Chemistry">Chemistry</option>
+                <option value="Other">Other</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            <p *ngIf="publicationForm.get('category')?.invalid && publicationForm.get('category')?.touched" 
+               class="mt-1 text-sm text-red-600 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Please select a category
+            </p>
+          </div>
+          
+          <!-- Description Field with character counter -->
+          <div class="relative">
+            <label for="description" class="absolute -top-2.5 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-600">
+              Description<span class="text-red-500">*</span>
+            </label>
+            <textarea
+              id="description"
+              formControlName="description"
+              rows="4"
+              placeholder="Provide a brief abstract or summary of your publication"
+              class="mt-1 block w-full px-4 py-3 border-2 rounded-lg focus:ring-0 transition duration-200 resize-y
+                    {{publicationForm.get('description')?.invalid && publicationForm.get('description')?.touched ? 
+                      'border-red-400 focus:border-red-500' : 
+                      'border-gray-200 focus:border-red-600'}}"
+            ></textarea>
+            <div class="flex justify-between mt-1">
+              <p *ngIf="publicationForm.get('description')?.invalid && publicationForm.get('description')?.touched" 
+                 class="text-sm text-red-600 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Description is required
+              </p>
+              <p class="text-xs text-gray-500">
+                {{ publicationForm.get('description')?.value?.length || 0 }}/500 characters
+              </p>
+            </div>
+          </div>
+          
+          <!-- Author Information -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-sm font-medium text-gray-700">Author Information</h3>
+              <button 
+                type="button" 
+                class="text-xs text-red-700 hover:text-red-800 flex items-center"
+                (click)="addCoAuthor()"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Add Co-author
+              </button>
+            </div>
+            
+            <div class="bg-gray-50 rounded-lg p-4">
+              <div class="flex flex-wrap gap-4">
+                <div class="flex items-center bg-white rounded-md px-3 py-2 shadow-sm border border-gray-200">
+                  <div class="flex-shrink-0 h-8 w-8 bg-red-200 rounded-full flex items-center justify-center text-red-700 font-medium">
+                    JD
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">Jane Doe</p>
+                    <p class="text-xs text-gray-500">Primary Author</p>
+                  </div>
+                </div>
+                
+                <!-- Example co-author chip -->
+                <div class="flex items-center bg-white rounded-md px-3 py-2 shadow-sm border border-gray-200">
+                  <div class="flex-shrink-0 h-8 w-8 bg-blue-200 rounded-full flex items-center justify-center text-blue-700 font-medium">
+                    JS
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">John Smith</p>
+                    <p class="text-xs text-gray-500">Co-author</p>
+                  </div>
+                  <button type="button" class="ml-2 text-gray-400 hover:text-red-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Keywords -->
+          <div class="relative">
+            <label for="keywords" class="absolute -top-2.5 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-600">
+              Keywords
+            </label>
+            <div class="flex items-center border-2 border-gray-200 rounded-lg focus-within:border-red-600 overflow-hidden">
+              <input 
+                id="keywords"
+                type="text" 
+                placeholder="Add up to 5 keywords (press Enter to add)"
+                class="flex-grow px-4 py-3 focus:outline-none"
+                #keywordInput
+                (keydown.enter)="addKeyword(keywordInput.value); keywordInput.value = ''; $event.preventDefault()"
+              >
+              <button 
+                type="button"
+                class="px-3 py-3 text-gray-500 hover:text-red-600"
+                (click)="addKeyword(keywordInput.value); keywordInput.value = ''"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </button>
+            </div>
+            
+            <!-- Keywords chips -->
+            <div class="mt-2 flex flex-wrap gap-2">
+              @for (keyword of keywords; track keyword) {
+                <div class="inline-flex items-center bg-red-50 text-red-800 rounded-full px-3 py-1 text-sm">
+                  {{ keyword }}
+                  <button 
+                    type="button" 
+                    class="ml-1 text-red-700 hover:text-red-900"
+                    (click)="removeKeyword(keyword)"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+          
+          <!-- File Upload -->
+          <div class="mt-8">
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Publication PDF</h3>
+            <div 
+              class="border-2 rounded-lg p-8 text-center transition-all duration-300 cursor-pointer group"
+              [class.border-gray-300]="!isDragging && !fileError && !selectedFile"
+              [class.border-red-500]="fileError"
+              [class.bg-red-50]="fileError"
+              [class.border-blue-300]="isDragging && !fileError"
+              [class.bg-blue-50]="isDragging && !fileError"
+              [class.border-green-300]="selectedFile && !fileError"
+              [class.bg-green-50]="selectedFile && !fileError"
+              (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave($event)"
+              (drop)="onDrop($event)"
+              (click)="fileInput.click()"
+            >
+              @if (!selectedFile) {
+                <div class="space-y-3">
+                  <div class="flex justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 group-hover:text-red-500 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-gray-700 font-medium">Upload your PDF file</p>
+                    <p class="text-gray-500 text-sm mt-1">Drag and drop your file here, or click to browse</p>
+                  </div>
+                  <p class="text-xs text-gray-500">Maximum file size: 10MB</p>
+                </div>
+              } @else {
+                <div class="flex flex-col items-center">
+                  <!-- PDF icon and file info -->
+                  <div class="h-16 w-16 flex items-center justify-center bg-red-100 rounded-lg mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div class="flex flex-col items-center">
+                    <span class="text-lg font-medium text-gray-800 truncate max-w-xs">{{ selectedFile.name }}</span>
+                    <span class="text-sm text-gray-500">{{ formatFileSize(selectedFile.size) }}</span>
+                    <button 
+                      type="button"
+                      class="mt-4 px-3 py-1 text-sm text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                      (click)="removeFile(); $event.stopPropagation()"
+                    >
+                      Remove File
+                    </button>
+                  </div>
+                </div>
+              }
+              
+              @if (fileError) {
+                <p class="text-red-600 mt-3 text-sm flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  {{ fileErrorMessage }}
+                </p>
+              }
+            </div>
+            
+            <input 
+              #fileInput 
+              type="file" 
+              accept="application/pdf" 
+              class="hidden" 
+              (change)="onFileSelected($event)"
+            >
+          </div>
+          
+          <div class="flex justify-end space-x-4 pt-8 border-t border-gray-100">
+            <button 
+              type="button" 
+              class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors duration-200"
+              (click)="closeForm()"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              class="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-red-800 to-red-600 rounded-lg hover:from-red-900 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center"
+              [disabled]="publicationForm.invalid || !selectedFile || isSubmitting"
+            >
+              <span *ngIf="!isSubmitting">Publish</span>
+              <span *ngIf="isSubmitting" class="flex items-center">
+                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
