@@ -17,8 +17,8 @@ public class ChercheurController {
     private ChercheurService chercheurService;
 
     @PostMapping
-    public ChercheurDTO addChercheur(@RequestBody Chercheur chercheur) {
-        return chercheurService.addChercheur(chercheur);
+    public Chercheur addChercheur(@RequestBody Chercheur chercheur) {
+        return chercheurService.register(chercheur);
     }
 
     @PutMapping("/{id}")
