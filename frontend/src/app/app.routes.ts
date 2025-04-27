@@ -29,8 +29,6 @@ export const routes: Routes = [
       component: HomeComponent,
       children: [
         { path: 'list', component: ListPublicationsComponent },
-        { path: 'my-account', component: MyAccountComponent },
-        { path: 'my-publications', component: MyPublicationsComponent },
         { path: 'pending-publications', component: PendingPublicationsComponent }
 
       ]
