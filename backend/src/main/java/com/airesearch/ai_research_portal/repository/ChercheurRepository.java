@@ -18,4 +18,6 @@ public interface ChercheurRepository extends JpaRepository<Chercheur, Long> {
     List<Chercheur> findByAddressContainingIgnoreCaseOrWorkAddressContainingIgnoreCaseOrJobTitleContainingIgnoreCase(String address, String workAddress, String jobTitle);
 
     Chercheur findByUsername(String username);
+
+    List<Chercheur> findAllByUsername(List<String> username);
 }

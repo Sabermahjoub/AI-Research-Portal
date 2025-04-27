@@ -51,36 +51,48 @@
             <div class="relative">
               <select
                 id="category"
-                formControlName="category"
+                formControlName="domains"
+                (change)="onDomainSelect($event)"
                 class="mt-1 block w-full px-4 py-3 border-2 rounded-lg focus:ring-0 transition duration-200 appearance-none
-                      {{publicationForm.get('category')?.invalid && publicationForm.get('category')?.touched ? 
+                      {{publicationForm.get('domains')?.invalid && publicationForm.get('domains')?.touched ? 
                         'border-red-400 focus:border-red-500' : 
                         'border-gray-200 focus:border-red-600'}}"
               >
-                <option value="" disabled selected>Select the most relevant category</option>
-                <option value="AI">Artificial Intelligence</option>
-                <option value="ML">Machine Learning</option>
-                <option value="NLP">Natural Language Processing</option>
-                <option value="Medicine">Medicine</option>
-                <option value="CS">Computer Science</option>
-                <option value="Biology">Biology</option>
-                <option value="Physics">Physics</option>
-                <option value="Chemistry">Chemistry</option>
-                <option value="Other">Other</option>
+                <option value="" disabled selected>Select a domain</option>
+                <option *ngFor="let domain of domainNames" [value]="domain">{{ domain }}</option>
               </select>
+
               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
             </div>
-            <p *ngIf="publicationForm.get('category')?.invalid && publicationForm.get('category')?.touched" 
+            <p *ngIf="publicationForm.get('domains')?.invalid && publicationForm.get('domains')?.touched" 
                class="mt-1 text-sm text-red-600 flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
-              Please select a category
+              Please select a domain
             </p>
+          </div>
+
+          <!-- Domain chips -->
+          <div class="mt-2 flex flex-wrap gap-2">
+            @for (domain of selectedDomainNames; track domain) {
+              <div class="inline-flex items-center bg-red-50 text-red-800 rounded-full px-3 py-1 text-sm">
+                {{ domain.domainName }}
+                <button 
+                  type="button" 
+                  class="ml-1 text-red-700 hover:text-red-900"
+                  (click)="removeDomain(domain)"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            }
           </div>
           
           <!-- Description Field with character counter -->
@@ -135,13 +147,13 @@
                     JD
                   </div>
                   <div class="ml-3">
-                    <p class="text-sm font-medium text-gray-900">Jane Doe</p>
+                    <p class="text-sm font-medium text-gray-900">Me</p>
                     <p class="text-xs text-gray-500">Primary Author</p>
                   </div>
                 </div>
                 
                 <!-- Example co-author chip -->
-                <div class="flex items-center bg-white rounded-md px-3 py-2 shadow-sm border border-gray-200">
+                <!--div class="flex items-center bg-white rounded-md px-3 py-2 shadow-sm border border-gray-200">
                   <div class="flex-shrink-0 h-8 w-8 bg-blue-200 rounded-full flex items-center justify-center text-blue-700 font-medium">
                     JS
                   </div>
@@ -154,17 +166,17 @@
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
-                </div>
+                </div-->
               </div>
             </div>
           </div>
           
           <!-- Keywords -->
           <div class="relative">
-            <label for="keywords" class="absolute -top-2.5 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-600">
+            <!--label for="keywords" class="absolute -top-2.5 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-600">
               Keywords
-            </label>
-            <div class="flex items-center border-2 border-gray-200 rounded-lg focus-within:border-red-600 overflow-hidden">
+            </!--label-->
+            <!--div class="flex items-center border-2 border-gray-200 rounded-lg focus-within:border-red-600 overflow-hidden">
               <input 
                 id="keywords"
                 type="text" 
@@ -182,25 +194,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
               </button>
-            </div>
-            
-            <!-- Keywords chips -->
-            <div class="mt-2 flex flex-wrap gap-2">
-              @for (keyword of keywords; track keyword) {
-                <div class="inline-flex items-center bg-red-50 text-red-800 rounded-full px-3 py-1 text-sm">
-                  {{ keyword }}
-                  <button 
-                    type="button" 
-                    class="ml-1 text-red-700 hover:text-red-900"
-                    (click)="removeKeyword(keyword)"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-              }
-            </div>
+            </div-->
+
           </div>
           
           <!-- File Upload -->
