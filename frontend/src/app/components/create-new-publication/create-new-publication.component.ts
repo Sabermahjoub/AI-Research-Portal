@@ -6,12 +6,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { PublicationsService } from '../../services/publications.service';
+import { DomainsService } from '../../services/domains.service';
 
 export interface Publication {
   title: string;
   description: string;
-  category: string;
-  pdfFile: File | null;
+  domains: String[];
+  content: File | null;
 }
 
 @Component({
@@ -30,28 +32,87 @@ export interface Publication {
   styleUrl: './create-new-publication.component.scss'
 })
 export class CreateNewPublicationComponent implements OnInit {
+  domainNames : String[] = [];
+  selectedDomainNames : any[] = [] ;
   publicationForm: FormGroup;
   selectedFile: File | null = null;
   isDragging = false;
   fileError = false;
   fileErrorMessage = '';
-  keywords: string[] = ['research', 'science'];
+  //keywords: string[] = ['research', 'science'];
   isSubmitting = false;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(private fb: FormBuilder ,
-    private dialogRef: MatDialogRef<CreateNewPublicationComponent>
+    private dialogRef: MatDialogRef<CreateNewPublicationComponent>,
+    private publicationsService : PublicationsService,
+    private domainsService : DomainsService
   ){
     this.publicationForm = this.fb.group({
       title: ['', [Validators.required]],
-      category: ['', [Validators.required]],
-      description: ['', [Validators.required, Validators.maxLength(500)]]
+      domains: [[], [Validators.required]],
+      description: ['', [Validators.required, Validators.maxLength(500)]],
+      publicationDate : [new Date().toISOString().split('T')[0], Validators.required],
+      accepted : [false, Validators.required]
     });
   }
 
   ngOnInit() {
+    this.domainsService.getAllDomains().subscribe(domainNames => {
+      this.domainNames = domainNames;
+    });
   }
+
+  onDomainSelect(event: Event): void {
+    const selectedDomain = (event.target as HTMLSelectElement).value;
+    if (!this.selectedDomainNames.some(item => item.domainName === selectedDomain)) {
+      this.selectedDomainNames.push({ domainName: selectedDomain });
+      this.publicationForm.get('domains')?.setValue(this.selectedDomainNames);
+    }
+  }
+  
+  removeDomain(domainToRemove: String): void {
+    this.selectedDomainNames = this.selectedDomainNames.filter(domain => domain.domainName !== domainToRemove);
+    this.publicationForm.get('domains')?.setValue(this.selectedDomainNames);
+  }
+
+  onSubmit() {
+    if (this.publicationForm.valid && this.selectedFile) {
+      // Show loading state
+      this.isSubmitting = true;
+      
+      // The domains should already be in the correct format in the form
+      // due to our updates to onDomainSelect and removeDomain
+      console.log(this.publicationForm.value);
+      
+      // Now you can proceed with your submission logic
+      // For example:
+      // this.publicationsService.createPublication(this.publicationForm.value, this.selectedFile)
+      //   .subscribe(
+      //     response => {
+      //       this.isSubmitting = false;
+      //       this.dialogRef.close(response);
+      //     },
+      //     error => {
+      //       this.isSubmitting = false;
+      //       // Handle error
+      //     }
+      //   );
+    } else {
+      // Mark all fields as touched to trigger validation messages
+      Object.keys(this.publicationForm.controls).forEach(key => {
+        const control = this.publicationForm.get(key);
+        control?.markAsTouched();
+      });
+      
+      if (!this.selectedFile) {
+        this.fileError = true;
+        this.fileErrorMessage = 'Please upload a PDF file';
+      }
+    }
+  }
+
 
   // Form progress calculation for progress bar
   getFormProgress(): number {
@@ -143,53 +204,22 @@ export class CreateNewPublicationComponent implements OnInit {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
-  addKeyword(keyword: string) {
-    keyword = keyword.trim();
-    if (keyword && !this.keywords.includes(keyword) && this.keywords.length < 5) {
-      this.keywords.push(keyword);
-    }
-  }
+  // addKeyword(keyword: string) {
+  //   keyword = keyword.trim();
+  //   if (keyword && !this.keywords.includes(keyword) && this.keywords.length < 5) {
+  //     this.keywords.push(keyword);
+  //   }
+  // }
 
-  removeKeyword(keyword: string) {
-    this.keywords = this.keywords.filter(k => k !== keyword);
-  }
+  // removeKeyword(keyword: string) {
+  //   this.keywords = this.keywords.filter(k => k !== keyword);
+  // }
 
   addCoAuthor() {
     console.log('Add co-author clicked');
   }
 
-  onSubmit() {
-    if (this.publicationForm.valid && this.selectedFile) {
-      // Show loading state
-      this.isSubmitting = true;
-      
-      // Here you would typically handle the form submission with a service
-      const formData = new FormData();
-      formData.append('title', this.publicationForm.get('title')?.value);
-      formData.append('category', this.publicationForm.get('category')?.value);
-      formData.append('description', this.publicationForm.get('description')?.value);
-      formData.append('keywords', JSON.stringify(this.keywords));
-      formData.append('file', this.selectedFile);
-      
-      // Simulate API call
-      setTimeout(() => {
-        console.log('Form submitted:', formData);
-        this.isSubmitting = false;
-        // Here you would handle the response and possibly redirect
-      }, 1500);
-    } else {
-      // Mark all fields as touched to trigger validation messages
-      Object.keys(this.publicationForm.controls).forEach(key => {
-        const control = this.publicationForm.get(key);
-        control?.markAsTouched();
-      });
-      
-      if (!this.selectedFile) {
-        this.fileError = true;
-        this.fileErrorMessage = 'Please upload a PDF file';
-      }
-    }
-  }
+
 
   closeForm() {
     this.dialogRef.close();
