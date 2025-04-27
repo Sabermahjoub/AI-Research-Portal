@@ -107,11 +107,11 @@ public class PublicationService {
         // Associate only existing domains
         publication.setDomains(existingDomains);
 
-        List<Long> chercheursIds = publication.getTeam()
+        List<String> chercheursUsernames = publication.getTeam()
                                           .stream()
-                                          .map(Chercheur::getId)
+                                          .map(Chercheur::getUsername)
                                           .collect(Collectors.toList());
-        List<Chercheur> existingChercheurs = chercheurRepository.findAllById(chercheursIds);
+        List<Chercheur> existingChercheurs = chercheurRepository.findByUsernameIn(chercheursUsernames);
 
         publication.setTeam(existingChercheurs);
         return this.pubRepo.save(publication);

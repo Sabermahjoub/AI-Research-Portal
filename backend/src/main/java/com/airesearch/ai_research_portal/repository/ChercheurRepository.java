@@ -19,5 +19,5 @@ public interface ChercheurRepository extends JpaRepository<Chercheur, Long> {
 
     Chercheur findByUsername(String username);
 
-    List<Chercheur> findAllByUsername(List<String> username);
+    List<Chercheur> findByUsernameIn(List<String> usernames);
 }
