@@ -69,8 +69,10 @@ export class CreateNewPublicationComponent implements OnInit {
       description: ['', [Validators.required, Validators.maxLength(500)]],
       publicationDate : [new Date().toISOString().split('T')[0], Validators.required],
       accepted : [false, Validators.required],
-      team : [userObject, Validators.required],
+      team : [[userObject], Validators.required],
       content : [null, Validators.required],
+      admin : [null],
+      commentaires : [[]],
 
 
     });
@@ -110,8 +112,8 @@ export class CreateNewPublicationComponent implements OnInit {
         
         // Create the publication object with the Base64 string
         const publicationData = this.publicationForm.value;
-        publicationData.content = base64Content;
-        // publicationData.content = "U29tZSBleGFtcGxlIGNvbnRlbnQ=";
+        //publicationData.content = base64Content;
+        publicationData.content = "U29tZSBleGFtcGxlIGNvbnRlbnQ=";
         console.log(publicationData);
   
         this.publicationsService.CreateNewPublication(publicationData)
