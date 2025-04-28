@@ -19,19 +19,19 @@ export class PublicationsService {
       return throwError(() => new Error('Authentication token not found'));
     }
   
-    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    // let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    if (token) {
-      headers = headers.set('Authorization', `Bearer ${token}`);
-      headers = headers.set('Accept', '*/*'); 
-    }
+    // if (token) {
+    //   headers = headers.set('Authorization', `Bearer ${token}`);
+    //   headers = headers.set('Accept', '*/*'); 
+    // }
     
-    const httpOptions = {headers};
+    // const httpOptions = {headers};
   
-    console.log('Sending request with token:', token.substring(0, 10) + '...');
-    console.log('HTTP Options:', httpOptions);
-  
-    return this.http.post<any>(`${backendUrl}/publications`, publication, httpOptions)
+    // console.log('Sending request with token:', token.substring(0, 10) + '...');
+    // console.log('HTTP Options:', httpOptions);
+
+    return this.http.post<any>(`${backendUrl}/publications`, publication)
       .pipe(
         catchError(error => {
           console.error('API Error:', error);
