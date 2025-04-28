@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { PublicationsService } from '../../services/publications.service';
 import { DomainsService } from '../../services/domains.service';
+import { MatSnackBar,MatSnackBarModule } from '@angular/material/snack-bar';
 
 export interface Publication {
   title: string;
@@ -26,7 +27,8 @@ export interface Publication {
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
   ],
   templateUrl: './create-new-publication.component.html',
   styleUrl: './create-new-publication.component.scss'
@@ -47,14 +49,30 @@ export class CreateNewPublicationComponent implements OnInit {
   constructor(private fb: FormBuilder ,
     private dialogRef: MatDialogRef<CreateNewPublicationComponent>,
     private publicationsService : PublicationsService,
-    private domainsService : DomainsService
+    private domainsService : DomainsService,
+    private snackBar: MatSnackBar
   ){
+
+    const currentUser = localStorage.getItem("currentUser");
+    let userObject;
+    
+    try {
+      userObject = JSON.parse(currentUser || '');
+    } catch (e) {
+      // If it's not valid JSON, create a user object
+      userObject = { username: currentUser };
+    }
+    
     this.publicationForm = this.fb.group({
       title: ['', [Validators.required]],
       domains: [[], [Validators.required]],
       description: ['', [Validators.required, Validators.maxLength(500)]],
       publicationDate : [new Date().toISOString().split('T')[0], Validators.required],
-      accepted : [false, Validators.required]
+      accepted : [false, Validators.required],
+      team : [userObject, Validators.required],
+      content : [null, Validators.required],
+
+
     });
   }
 
@@ -69,6 +87,7 @@ export class CreateNewPublicationComponent implements OnInit {
     if (!this.selectedDomainNames.some(item => item.domainName === selectedDomain)) {
       this.selectedDomainNames.push({ domainName: selectedDomain });
       this.publicationForm.get('domains')?.setValue(this.selectedDomainNames);
+      console.log("domains : ", this.publicationForm.get('domains')?.value);
     }
   }
   
@@ -79,28 +98,64 @@ export class CreateNewPublicationComponent implements OnInit {
 
   onSubmit() {
     if (this.publicationForm.valid && this.selectedFile) {
-      // Show loading state
       this.isSubmitting = true;
       
-      // The domains should already be in the correct format in the form
-      // due to our updates to onDomainSelect and removeDomain
-      console.log(this.publicationForm.value);
+      const reader = new FileReader();
+      reader.readAsDataURL(this.selectedFile); // This reads as Base64
       
-      // Now you can proceed with your submission logic
-      // For example:
-      // this.publicationsService.createPublication(this.publicationForm.value, this.selectedFile)
-      //   .subscribe(
-      //     response => {
-      //       this.isSubmitting = false;
-      //       this.dialogRef.close(response);
-      //     },
-      //     error => {
-      //       this.isSubmitting = false;
-      //       // Handle error
-      //     }
-      //   );
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        // Remove the data:application/pdf;base64, prefix
+        const base64Content = base64String.split(',')[1];
+        
+        // Create the publication object with the Base64 string
+        const publicationData = this.publicationForm.value;
+        publicationData.content = base64Content;
+        // publicationData.content = "U29tZSBleGFtcGxlIGNvbnRlbnQ=";
+        console.log(publicationData);
+  
+        this.publicationsService.CreateNewPublication(publicationData)
+          .subscribe({
+            next: (response: any) => {
+              this.isSubmitting = false;
+              this.dialogRef.close(response);
+            },
+            error: (error: any) => {
+              this.isSubmitting = false;
+              console.error('Error creating publication:', error);
+              
+              // Show error message in snackbar
+              this.snackBar.open(
+                'Failed to create publication: ' + (error.error?.message || 'Unknown error'),
+                'Close',
+                {
+                  duration: 5000,
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                  panelClass: ['error-snackbar']
+                }
+              );
+            }
+          });
+      };
+      
+      reader.onerror = (error) => {
+        this.isSubmitting = false;
+        console.error('Error reading file:', error);
+        
+        // Show error message for file reading error
+        this.snackBar.open(
+          'Error reading file: Please try again',
+          'Close',
+          {
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            panelClass: ['error-snackbar']
+          }
+        );
+      };
     } else {
-      // Mark all fields as touched to trigger validation messages
       Object.keys(this.publicationForm.controls).forEach(key => {
         const control = this.publicationForm.get(key);
         control?.markAsTouched();
@@ -109,15 +164,25 @@ export class CreateNewPublicationComponent implements OnInit {
       if (!this.selectedFile) {
         this.fileError = true;
         this.fileErrorMessage = 'Please upload a PDF file';
+        
+        this.snackBar.open(
+          'Please fix all errors before submitting',
+          'Close',
+          {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['warning-snackbar']
+          }
+        );
       }
     }
   }
 
-
   // Form progress calculation for progress bar
   getFormProgress(): number {
     const controls = this.publicationForm.controls;
-    const totalControls = Object.keys(controls).length + 1; // +1 for file upload
+    const totalControls = Object.keys(controls).length; // +1 for file upload
     let filledControls = 0;
     
     for (const key in controls) {
@@ -184,6 +249,8 @@ export class CreateNewPublicationComponent implements OnInit {
     
     this.fileError = false;
     this.selectedFile = file;
+    this.publicationForm.get('content')?.setValue(this.selectedFile);
+
   }
 
   removeFile() {

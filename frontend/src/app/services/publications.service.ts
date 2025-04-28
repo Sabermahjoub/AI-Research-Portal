@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-//import { catchError, tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { backendUrl } from '../environement/environement';
 
 @Injectable({
@@ -9,18 +9,38 @@ import { backendUrl } from '../environement/environement';
 })
 export class PublicationsService {
 
-  constructor(private http : HttpClient) { 
-  }
+  constructor(private http: HttpClient) { }
 
-  CreateNewPublication(publication : any) : Observable<any> {
-
+  CreateNewPublication(publication: any): Observable<any> {
     const token = localStorage.getItem('token');
+    
+    if (!token) {
+      console.error('Authentication token not found');
+      return throwError(() => new Error('Authentication token not found'));
+    }
+  
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.http.post<any>(`${backendUrl}/publications`, publication, { headers });
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+      headers = headers.set('Accept', '*/*'); 
+    }
+    
+    const httpOptions = {headers};
+  
+    console.log('Sending request with token:', token.substring(0, 10) + '...');
+    console.log('HTTP Options:', httpOptions);
+  
+    return this.http.post<any>(`${backendUrl}/publications`, publication, httpOptions)
+      .pipe(
+        catchError(error => {
+          console.error('API Error:', error);
+          if (error.status === 401) {
+            console.error('Unauthorized: Token might be invalid, expired, or headers missing.');
+          }
+          return throwError(() => error);
+        })
+      );
   }
-
+  
 }
