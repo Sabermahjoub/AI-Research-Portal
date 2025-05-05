@@ -44,7 +44,7 @@ import {RouterModule } from '@angular/router';
         <h1 class="text-4xl md:text-6xl font-bold mb-4">Next-Gen AI Research Portal</h1>
         <p class="text-xl mb-8 max-w-2xl mx-auto">Discover, analyze, and leverage cutting-edge AI research with our powerful coreAI platform.</p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-          <button class="bg-white text-red-700 px-6 py-3 rounded-lg font-medium text-lg hover:bg-red-100 transition">Get Started</button>
+          <button [routerLink]="['/home/list']" class="bg-white text-red-700 px-6 py-3 rounded-lg font-medium text-lg hover:bg-red-100 transition">Get Started</button>
         </div>
       </div>
       

@@ -4,12 +4,34 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { backendUrl } from '../environement/environement';
 
+export interface Publication {
+  id : number;
+  title: string;
+  description: string;
+  publicationDate : string;
+  domains: any[];
+  accepted : boolean;
+  admin : any | null;
+  commentaires : any[];
+  team : any[];
+  content: File | null;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class PublicationsService {
 
   constructor(private http: HttpClient) { }
+
+  getAllPublications() : Observable<Publication[]> {
+    return this.http.get<Publication[]>(`${backendUrl}/publications/getAll`).pipe(
+      catchError(error => {
+        console.error('Error fetching publications:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 
   CreateNewPublication(publication: any): Observable<any> {
     const token = localStorage.getItem('token');

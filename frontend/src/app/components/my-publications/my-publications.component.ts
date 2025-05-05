@@ -6,8 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { CreateNewPublicationComponent, Publication } from '../create-new-publication/create-new-publication.component';
+import { CreateNewPublicationComponent } from '../create-new-publication/create-new-publication.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Publication } from '../../services/publications.service';
 
 @Component({
   selector: 'app-my-publications',

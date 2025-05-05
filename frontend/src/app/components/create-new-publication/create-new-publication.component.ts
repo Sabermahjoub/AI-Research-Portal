@@ -10,12 +10,6 @@ import { PublicationsService } from '../../services/publications.service';
 import { DomainsService } from '../../services/domains.service';
 import { MatSnackBar,MatSnackBarModule } from '@angular/material/snack-bar';
 
-export interface Publication {
-  title: string;
-  description: string;
-  domains: String[];
-  content: File | null;
-}
 
 @Component({
   selector: 'app-publication-add',
