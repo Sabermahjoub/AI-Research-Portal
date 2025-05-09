@@ -5,7 +5,7 @@
             <span class="text-2xl font-serif text-red-800 font-thin">List of publications</span>
         </div>
         <div class="flex-grow"></div>
-        <div>
+        <div *ngIf="publications.length !== 0 ">
             <form>
                 <mat-form-field  >
                     <mat-label >Search</mat-label>
@@ -19,9 +19,14 @@
        
     </div>
 
-
+    <div *ngIf="publications.length === 0" class="flex mb-2">
+        <p class="w-full flex font-extralight text-black font-mono">
+            <span class="inline-block">There are no approved publications at the moment ! </span>
+        </p>
+    </div>
     <!-- Content -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6">
+    <div *ngIf="publications.length !== 0 " class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6">
+
         <div *ngFor="let publication of publications" class="hover:cursor-pointer relative mb-2">
             <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col">
                 

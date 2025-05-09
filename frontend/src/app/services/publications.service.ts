@@ -25,7 +25,7 @@ export class PublicationsService {
   constructor(private http: HttpClient) { }
 
   getAllPublications() : Observable<Publication[]> {
-    return this.http.get<Publication[]>(`${backendUrl}/publications/getAll`).pipe(
+    return this.http.get<Publication[]>(`${backendUrl}/publications/get_all_by_acceptance/true`).pipe(
       catchError(error => {
         console.error('Error fetching publications:', error);
         return throwError(() => error);
