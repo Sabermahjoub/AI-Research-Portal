@@ -22,18 +22,18 @@
     </div>
 
     <div class="mb-4 flex">
-        <p class="font-extralight text-black font-mono">There are 4 pending publications</p>
+        <p class="font-extralight text-black font-mono">There are {{ pending_publications.length }} pending publications</p>
     </div>
     
 
 
     <!-- Content -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6">
-        <div *ngFor="let i of [1,2,3,4]" class="hover:cursor-pointer relative mb-2">
+        <div *ngFor="let publication of pending_publications" class="hover:cursor-pointer relative mb-2">
             <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col">
                 
-                <div class="flex items-center bg-red-50 px-4 py-2 text-xs text-gray-500 border-b border-gray-200">
-                    <span class="w-[60%]">AI</span>
+                <div *ngFor="let domain of publication.domains" class="flex items-center bg-red-50 px-4 py-2 text-xs text-gray-500 border-b border-gray-200">
+                    <span class="w-[60%]">{{domain.domainName}}</span>
                 </div>
 
                 <!-- Image container with negative margin to create overlap -->
@@ -47,7 +47,7 @@
                 <div class="p-4 flex flex-col flex-grow">
 
                     <div class="w-full mb-2 flex justify-center items-center">
-                        <h3 class="font-bold text-base">The power of NLP in medicine</h3>
+                        <h3 class="font-bold text-base">{{publication.title}}</h3>
                     </div>
                     <!-- Title and Author -->
                     <div class="flex items-center mb-2">
@@ -56,19 +56,19 @@
                                 alt="Author" class="w-full h-full object-cover">
                         </div>
                         <div class="w-[70%">
-                            <p class="text-sm text-gray-600">Saber Mahjoub</p>
-                            <p class="text-xs text-gray-500">03/01/2025</p>
+                            <p *ngFor="let member of publication.team" class="text-sm text-gray-600">{{member.username}}</p>
+                            <p class="text-xs text-gray-500">{{publication.publicationDate}}</p>
                         </div>
                     </div>
 
                     <!-- Description -->
                     <p class="text-gray-700 text-sm mb-2 line-clamp-3 flex-grow overflow-hidden">
-                        Lorem ipsum dolor sit amet. Eos veniam totam non voluptatum laboriosam ut optio molestiae. Ea iure laboriosam eos repellendus earum et ipsam tenetur in optio magnam et soluta magni ut consectetur illum et quod aperiam.
+                        {{publication.description}}
                     </p>
 
                     <!-- Actions -->
                     <div class="flex justify-between items-center mt-auto pt-2">
-                        <button class="flex items-center px-2 py-1 rounded">
+                        <button (click)="validatePublication(publication, $event)" class="flex items-center px-2 py-1 rounded">
                             <span class="material-symbols-outlined text-green-900">
                                 check
                             </span>
