@@ -1,9 +1,11 @@
 package com.airesearch.ai_research_portal.service;
 
+import com.airesearch.ai_research_portal.model.Admin;
 import com.airesearch.ai_research_portal.model.Chercheur;
 import com.airesearch.ai_research_portal.model.Commentaire;
 import com.airesearch.ai_research_portal.model.Domain;
 import com.airesearch.ai_research_portal.model.Publication;
+import com.airesearch.ai_research_portal.repository.AdminRepository;
 import com.airesearch.ai_research_portal.repository.ChercheurRepository;
 import com.airesearch.ai_research_portal.repository.DomainRepository;
 import com.airesearch.ai_research_portal.repository.PublicationRepository;
@@ -25,6 +27,9 @@ public class PublicationService {
 
     @Autowired
     private ChercheurRepository chercheurRepository;
+
+    @Autowired
+    AdminRepository adminRepository;
 
     public Publication getPublicationById(long idPublication) throws Exception {
         Optional<Publication> optionalPublication = this.pubRepo.findById(idPublication);
@@ -62,6 +67,9 @@ public class PublicationService {
         if (!this.pubRepo.existsById(publication.getId())){
             throw new RuntimeException("Publication with id : "+publication.getId()+" doesn't exist.");
         }
+        String adminUsername = publication.getAdmin().getUsername();
+        Admin admin = adminRepository.findByUsername(adminUsername);
+        publication.setAdmin(admin);
         return this.pubRepo.save(publication);
     }
 
