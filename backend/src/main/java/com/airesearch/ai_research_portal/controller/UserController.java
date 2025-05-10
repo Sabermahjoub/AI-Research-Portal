@@ -53,4 +53,23 @@ public class UserController {
         return userepository.findAll();
     }
 
+    @GetMapping("/current")
+    public User getCurrentUser(Principal principal) {
+        String username = principal.getName();
+        User user = userepository.findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+        return user;
+    }
+
+    @GetMapping("/{username}")
+    public User getUserByUsername(@PathVariable String username) {
+        User user = userepository.findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+        return user;
+    }
+
 }

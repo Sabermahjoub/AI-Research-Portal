@@ -69,16 +69,50 @@ export class MyAccountComponent implements OnInit {
     this.userService.getCurrentUser().subscribe({
       next: (user) => {
         console.log('User data loaded:', user);
-        this.userData = {
-          firstName: user.firstName || '',
-          lastName: user.lastName || '',
-          email: user.email || '',
-          username: user.username || '',
-          address: user.address || '',
-          workAddress: user.workAddress || '',
-          jobTitle: user.jobTitle || '',
-          about: user.about || ''
+
+        // Check if the user is a Chercheur (has firstName, lastName, etc.)
+        if (user.firstName !== undefined) {
+          // User is a Chercheur
+          this.userData = {
+            id: user.id,
+            firstName: user.firstName || '',
+            lastName: user.lastName || '',
+            email: user.email || '',
+            username: user.username || '',
+            address: user.address || '',
+            workAddress: user.workAddress || '',
+            jobTitle: user.jobTitle || '',
+            about: user.about || '',
+            role: user.role
+          };
+        } else {
+          // User is not a Chercheur, might be a regular User
+          this.userData = {
+            id: user.id,
+            username: user.username || '',
+            role: user.role,
+            // Set default values for Chercheur fields
+            firstName: '',
+            lastName: '',
+            email: '',
+            address: '',
+            workAddress: '',
+            jobTitle: '',
+            about: ''
+          };
+        }
+
+        // Update the stored user info with additional details
+        const updatedUserInfo = {
+          ...currentUser,
+          ...this.userData
         };
+
+        // Store updated user info in localStorage
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+          localStorage.setItem('currentUser', JSON.stringify(updatedUserInfo));
+        }
+
         this.isLoading = false;
       },
       error: (error) => {
@@ -101,12 +135,41 @@ export class MyAccountComponent implements OnInit {
   updateProfile(): void {
     this.isUpdating = true;
 
-    this.userService.updateUser(this.userData).subscribe({
+    // Make a copy of the userData to avoid modifying the original
+    const userDataToUpdate = { ...this.userData };
+
+    // Make sure we have the user ID
+    if (!userDataToUpdate.id) {
+      const token = this.authService.getToken();
+      if (token) {
+        try {
+          // Try to extract user ID from JWT token
+          const tokenParts = token.split('.');
+          if (tokenParts.length === 3) {
+            const payload = JSON.parse(atob(tokenParts[1]));
+            if (payload.UserId) {
+              userDataToUpdate.id = payload.UserId;
+            }
+          }
+        } catch (e) {
+          console.error('Error parsing JWT token:', e);
+        }
+      }
+    }
+
+    console.log('Updating profile with data:', userDataToUpdate);
+
+    this.userService.updateUser(userDataToUpdate).subscribe({
       next: (response) => {
+        console.log('Profile updated successfully:', response);
         this.snackBar.open('Profile updated successfully', 'Close', {
           duration: 3000,
           panelClass: ['snackbar-success']
         });
+
+        // Reload user data to get the updated information
+        this.loadUserData();
+
         this.isUpdating = false;
       },
       error: (error) => {
@@ -128,7 +191,25 @@ export class MyAccountComponent implements OnInit {
     const currentUser = this.authService.currentUserValue;
     const username = currentUser?.username || 'user';
 
+    // Try to extract user ID from JWT token
+    let userId = null;
+    const token = this.authService.getToken();
+    if (token) {
+      try {
+        const tokenParts = token.split('.');
+        if (tokenParts.length === 3) {
+          const payload = JSON.parse(atob(tokenParts[1]));
+          if (payload.UserId) {
+            userId = payload.UserId;
+          }
+        }
+      } catch (e) {
+        console.error('Error parsing JWT token:', e);
+      }
+    }
+
     this.userData = {
+      id: userId || 1,
       firstName: 'User',
       lastName: 'Account',
       email: `${username}@example.com`,
@@ -136,7 +217,19 @@ export class MyAccountComponent implements OnInit {
       address: 'Tunis, Tunisia',
       workAddress: 'Research Center, Tunis',
       jobTitle: 'Researcher',
-      about: 'AI researcher specializing in natural language processing and machine learning.'
+      about: 'AI researcher specializing in natural language processing and machine learning.',
+      role: 'CHERCHEUR'
     };
+
+    // Update the stored user info with additional details
+    const updatedUserInfo = {
+      ...currentUser,
+      ...this.userData
+    };
+
+    // Store updated user info in localStorage
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      localStorage.setItem('currentUser', JSON.stringify(updatedUserInfo));
+    }
   }
 }
