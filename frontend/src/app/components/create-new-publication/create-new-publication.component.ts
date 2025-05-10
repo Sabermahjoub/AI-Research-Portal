@@ -62,7 +62,7 @@ export class CreateNewPublicationComponent implements OnInit {
       domains: [[], [Validators.required]],
       description: ['', [Validators.required, Validators.maxLength(500)]],
       publicationDate : [new Date().toISOString().split('T')[0], Validators.required],
-      accepted : [false, Validators.required],
+      accepted : [null],
       team : [[userObject], Validators.required],
       content : [null, Validators.required],
       admin : [null],
