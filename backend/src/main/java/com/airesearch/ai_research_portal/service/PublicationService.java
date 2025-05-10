@@ -96,6 +96,10 @@ public class PublicationService {
         return this.pubRepo.findAll();
     }
 
+    public List<Publication> getPublicationsByChercheurUsername(String username) {
+        return pubRepo.findByChercheurUsername(username);
+    }
+
     public List<Publication> getPublicationsByAcceptance(boolean isAccepted) {
         return this.pubRepo.findByAccepted(isAccepted);
     }

@@ -42,6 +42,12 @@ public class PublicationController {
 
     }
 
+    @GetMapping("/getByChercheur/{username}")
+    public ResponseEntity<List<Publication>> getPublicationsByChercheur(@PathVariable String username) {
+        List<Publication> publications = pubService.getPublicationsByChercheurUsername(username);
+        return ResponseEntity.ok(publications);
+    }
+
     @GetMapping("/getByTitre/{titre}")
     public ResponseEntity<?> getPublicationByTitre(@PathVariable("titre") String titre) throws Exception {
 
