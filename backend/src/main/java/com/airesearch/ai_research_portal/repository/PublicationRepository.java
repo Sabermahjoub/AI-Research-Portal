@@ -24,4 +24,6 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
 
     List<Publication> findByAccepted(Boolean accepted);
 
+    @Query("SELECT p FROM Publication p JOIN p.team c WHERE c.username = :username")
+    List<Publication> findByChercheurUsername(@Param("username") String username);
 }
