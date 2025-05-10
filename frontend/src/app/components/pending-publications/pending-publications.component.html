@@ -9,8 +9,8 @@
         <div class="flex-grow"></div>
         <div>
             <form>
-                <mat-form-field  >
-                    <mat-label >Search</mat-label>
+                <mat-form-field>
+                    <mat-label>Search</mat-label>
                     <input matInput>
                     <span matSuffix class="hover:cursor-pointer hover:text-red-600 mr-3 material-symbols-outlined flex items-center">
                         search
@@ -18,14 +18,11 @@
                 </mat-form-field>
             </form>
         </div>
-       
     </div>
 
     <div class="mb-4 flex">
         <p class="font-extralight text-black font-mono">There are {{ pending_publications.length }} pending publications</p>
     </div>
-    
-
 
     <!-- Content -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6">
@@ -68,12 +65,12 @@
 
                     <!-- Actions -->
                     <div class="flex justify-between items-center mt-auto pt-2">
-                        <button (click)="validatePublication(publication, $event)" class="flex items-center px-2 py-1 rounded">
+                        <button (click)="updatePublication(publication, true, $event)" class="flex items-center px-2 py-1 rounded">
                             <span class="material-symbols-outlined text-green-900">
                                 check
                             </span>
                         </button>
-                        <button class="flex items-center px-2 py-1 rounded">
+                        <button (click)="updatePublication(publication, false, $event)" class="flex items-center px-2 py-1 rounded">
                             <span class="material-symbols-outlined text-red-700">
                                 close
                             </span>

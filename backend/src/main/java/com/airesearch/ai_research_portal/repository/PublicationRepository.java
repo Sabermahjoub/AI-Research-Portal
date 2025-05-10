@@ -20,7 +20,8 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
     // Find by mots-clés/keywords
     @Query(value="SELECT * FROM Publication WHERE description LIKE :keyword OR title LIKE :keyword", nativeQuery=true)
     List<Publication> findByKeyWord(@Param("keyword") String keyword);
+    List<Publication> findByAcceptedIsNull();
 
-    List<Publication> findByAccepted(boolean accepted);
+    List<Publication> findByAccepted(Boolean accepted);
 
 }

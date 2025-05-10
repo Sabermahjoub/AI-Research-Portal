@@ -36,8 +36,8 @@ public class Publication {
 
     // True, if the admin accepts the article to be published in the website
     // false, otherwise.
-    @Column(name="accepted", nullable=false)
-    private boolean accepted;
+    @Column(name="accepted", nullable=true)
+    private Boolean accepted;
 
     // References the admin who accepted the publication of the article.
     // Could be null, if not yet accepted.

@@ -99,11 +99,19 @@ public class PublicationController {
 
     }
 
-    @GetMapping("/get_all_by_acceptance/{isAccepted}")
-    public ResponseEntity<Object> getAllPublicationsByAcceptance(@PathVariable("isAccepted") boolean isAccepted) throws Exception {
-
+    @GetMapping("/get_all_by_acceptance/{status}")
+    public ResponseEntity<Object> getAllPublicationsByAcceptance(@PathVariable("status") String status) throws Exception {
         try {
-            List<Publication> pub = this.pubService.getPublicationsByAcceptance(isAccepted);
+            List<Publication> pub;
+            if ("null".equalsIgnoreCase(status)) {
+                // Get publications where accepted is NULL
+                pub = this.pubService.getPublicationsWithNullAcceptance();
+            } else {
+                // Convert string to boolean for true/false cases
+                Boolean isAccepted = Boolean.valueOf(status);
+                pub = this.pubService.getPublicationsByAcceptance(isAccepted);
+            }
+
             if (pub == null || pub.isEmpty()) {
                 return new ResponseEntity<>(Collections.singletonMap("error", "Publications not found"), HttpStatus.NOT_FOUND);
             }
@@ -113,9 +121,8 @@ public class PublicationController {
         catch(Exception e) {
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("error", e.getMessage());
-            return new ResponseEntity<>(responseBody,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
         }
-
     }
 
     @GetMapping("/get_all_by_keyword/{keyword}")

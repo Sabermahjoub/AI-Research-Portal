@@ -13,7 +13,7 @@ export class PendingPublicationsService {
   constructor(private http: HttpClient) { }
 
   getAllPendingPublications() : Observable<Publication[]> {
-    return this.http.get<Publication[]>(`${backendUrl}/publications/get_all_by_acceptance/false`).pipe(
+    return this.http.get<Publication[]>(`${backendUrl}/publications/get_all_by_acceptance/null`).pipe(
       catchError(error => {
         console.error('Error fetching pending publications:', error);
         return throwError(() => error);
@@ -22,7 +22,7 @@ export class PendingPublicationsService {
   }
 
   updatePublication(publication : Publication) : Observable<Publication> {
-    return this.http.put<Publication>(`${backendUrl}/publications`, publication).pipe(
+    return this.http.put<any>(`${backendUrl}/publications`, publication).pipe(
       catchError(error => {
         console.error('Error updating publication', error);
         return throwError(() => error);
