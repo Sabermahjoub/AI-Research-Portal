@@ -100,6 +100,11 @@ public class PublicationService {
         return this.pubRepo.findByAccepted(isAccepted);
     }
 
+    public List<Publication> getPublicationsWithNullAcceptance() {
+        return this.pubRepo.findByAcceptedIsNull();
+    }
+
+
     public Publication createPublication(Publication publication) throws Exception {
         if (this.pubRepo.findById(publication.getId()).isPresent()){
             throw new RuntimeException("Publication already exists ");
