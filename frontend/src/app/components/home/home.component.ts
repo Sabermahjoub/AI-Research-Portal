@@ -11,6 +11,8 @@ import { NgClass } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
+import { UserService } from '../../services/user.service';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -27,12 +29,13 @@ import { AuthService } from '../../services/auth.service';
   ]
 })
 export class HomeComponent implements OnInit {
+  role : string = "";
   sideBarOpened: boolean = true; // Set to true to keep sidebar open by default
   activeItem: string = 'home';
   currentUser: any;
   isAuthenticated: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private router: Router, private authService: AuthService, private userService : UserService) {
     // Get current user from auth service
     this.authService.currentUser.subscribe(user => {
       this.currentUser = user;
@@ -45,6 +48,25 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.userService.getCurrentUser().subscribe({
+      next: (user) => {
+        console.log('User data loaded:', user);
+
+        this.role = user.role;
+
+        console.log("ROLE :",this.role);
+
+        // if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        //   localStorage.setItem('currentUser', JSON.stringify(user));
+        // }
+
+      },
+      error: (error) => {
+        console.error('Error loading user data:', error);
+      }
+    });
+
     // Set active item based on current route
     const currentUrl = this.router.url;
     if (currentUrl.includes('/home/list')) {
