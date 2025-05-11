@@ -21,17 +21,11 @@ import java.util.function.Function;
 public class JWTService {
 
 
-    private String secretkey = "";
+    // Utiliser une clé secrète fixe pour éviter les problèmes de validation après redémarrage
+    private String secretkey = "AIResearchPortalSecretKey123456789012345678901234567890";
 
     public JWTService() {
-
-        try {
-            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey sk = keyGen.generateKey();
-            secretkey = Base64.getEncoder().encodeToString(sk.getEncoded());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        // Aucune génération de clé nécessaire, nous utilisons une clé fixe
     }
 
     public String generateToken(String username, String role,Long id) {

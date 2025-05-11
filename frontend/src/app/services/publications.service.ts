@@ -33,23 +33,32 @@ export class PublicationsService {
     );
   }
 
+  getPublicationsByChercheur(username: string): Observable<Publication[]> {
+    return this.http.get<Publication[]>(`${backendUrl}/publications/getByChercheur/${username}`).pipe(
+      catchError(error => {
+        console.error('Error fetching publications by chercheur:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
   CreateNewPublication(publication: any): Observable<any> {
     const token = localStorage.getItem('token');
-    
+
     if (!token) {
       console.error('Authentication token not found');
       return throwError(() => new Error('Authentication token not found'));
     }
-  
+
     // let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     // if (token) {
     //   headers = headers.set('Authorization', `Bearer ${token}`);
-    //   headers = headers.set('Accept', '*/*'); 
+    //   headers = headers.set('Accept', '*/*');
     // }
-    
+
     // const httpOptions = {headers};
-  
+
     // console.log('Sending request with token:', token.substring(0, 10) + '...');
     // console.log('HTTP Options:', httpOptions);
 
@@ -64,5 +73,5 @@ export class PublicationsService {
         })
       );
   }
-  
+
 }

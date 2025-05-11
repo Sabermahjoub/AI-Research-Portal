@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { CreateNewPublicationComponent } from '../create-new-publication/create-new-publication.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Publication } from '../../services/publications.service';
+import { Publication, PublicationsService } from '../../services/publications.service';
 
 @Component({
   selector: 'app-my-publications',
@@ -25,49 +25,89 @@ import { Publication } from '../../services/publications.service';
   templateUrl: './my-publications.component.html',
   styleUrl: './my-publications.component.scss'
 })
-export class MyPublicationsComponent {
+export class MyPublicationsComponent implements OnInit {
 
   searchQuery: string = '';
-  publications: any[] = [
-    {
-      title: 'The power of NLP in medicine',
-      category: 'AI',
-      description: 'Lorem ipsum dolor sit amet. Eos veniam totam non voluptatum laboriosam ut optio molestiae. Ea iure laboriosam eos repellendus earum et ipsam tenetur in optio magnam et soluta magni ut consectetur illum et quod aperiam.',
-      author: 'Saber Mahjoub',
-      date: '03/01/2025',
-      likes: 23,
-      comments: 5
-    },
-    {
-      title: 'Machine Learning Applications',
-      category: 'ML',
-      description: 'A comprehensive study on how machine learning is transforming various industries with practical examples and case studies.',
-      author: 'Saber Mahjoub',
-      date: '02/15/2025',
-      likes: 18,
-      comments: 3
-    },
-    {
-      title: 'Deep Learning Fundamentals',
-      category: 'AI',
-      description: 'An in-depth guide to understanding the core concepts of deep learning and neural networks with practical implementations.',
-      author: 'Saber Mahjoub',
-      date: '01/20/2025',
-      likes: 15,
-      comments: 7
-    },
-    {
-      title: 'Medical Data Analysis',
-      category: 'Medicine',
-      description: 'Exploring how big data analytics is revolutionizing medical diagnosis and treatment planning in modern healthcare systems.',
-      author: 'Saber Mahjoub',
-      date: '12/05/2024',
-      likes: 31,
-      comments: 12
-    }
-  ];
+  publications: any[] = [];
+  loading: boolean = false;
+  error: string | null = null;
+  username: string | null = null;
+  hasPublications: boolean = false;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private publicationsService: PublicationsService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadUserPublications();
+  }
+
+  loadUserPublications(): void {
+    this.loading = true;
+    this.error = null;
+
+    // Get username from localStorage
+    const currentUserStr = localStorage.getItem('currentUser');
+    if (currentUserStr) {
+      try {
+        const currentUser = JSON.parse(currentUserStr);
+        this.username = currentUser.username;
+      } catch (e) {
+        console.error('Error parsing currentUser from localStorage', e);
+      }
+    }
+
+    if (!this.username) {
+      console.error('No username found in localStorage');
+      this.error = 'User not authenticated';
+      this.loading = false;
+      this.hasPublications = false;
+      return;
+    }
+
+    this.publicationsService.getPublicationsByChercheur(this.username).subscribe({
+      next: (publications) => {
+        if (publications && publications.length > 0) {
+          // Transform the data to match the template format
+          this.publications = publications.map(pub => ({
+            id: pub.id,
+            title: pub.title,
+            description: pub.description,
+            category: pub.domains && pub.domains.length > 0 ? pub.domains[0].domainName : 'General',
+            author: pub.team && pub.team.length > 0 ? pub.team[0].username : this.username,
+            date: this.formatDate(pub.publicationDate),
+            likes: 0, // These fields are not in the API response, using defaults
+            comments: pub.commentaires ? pub.commentaires.length : 0
+          }));
+          this.hasPublications = true;
+        } else {
+          // If no publications found, set empty array
+          this.publications = [];
+          this.hasPublications = false;
+        }
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading publications:', err);
+        this.error = 'Failed to load publications';
+        this.loading = false;
+        this.publications = [];
+        this.hasPublications = false;
+      }
+    });
+  }
+
+  formatDate(dateString: string): string {
+    if (!dateString) return this.formatCurrentDate();
+
+    try {
+      const date = new Date(dateString);
+      return `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}`;
+    } catch (e) {
+      return this.formatCurrentDate();
+    }
+  }
 
   openAddPublicationDialog(): void {
     const dialogRef = this.dialog.open(CreateNewPublicationComponent, {
@@ -77,14 +117,8 @@ export class MyPublicationsComponent {
 
     dialogRef.afterClosed().subscribe((result: Publication) => {
       if (result) {
-        // Add the new publication to the list with default values for display
-        this.publications.unshift({
-          ...result,
-          author: 'Saber Mahjoub',
-          date: this.formatCurrentDate(),
-          likes: 0,
-          comments: 0
-        });
+        // Reload publications from server after adding a new one
+        setTimeout(() => this.loadUserPublications(), 1000);
       }
     });
   }
@@ -93,12 +127,19 @@ export class MyPublicationsComponent {
     const index = this.publications.indexOf(publication);
     if (index !== -1) {
       this.publications.splice(index, 1);
+      // Here you would typically call a service method to delete from the backend
+      // this.publicationsService.deletePublication(publication.id).subscribe(...)
     }
   }
 
   private formatCurrentDate(): string {
     const date = new Date();
     return `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}`;
+  }
+
+  // Method to refresh publications
+  refreshPublications(): void {
+    this.loadUserPublications();
   }
 
 }

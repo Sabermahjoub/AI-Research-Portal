@@ -28,18 +28,39 @@
     </div>
 
     <div class="mb-4 flex">
-        <p class="font-extralight text-black font-mono">You have {{ publications.length }} approved publications</p>
+        <p class="font-extralight text-black font-mono" *ngIf="hasPublications">You have {{ publications.length }} approved publications</p>
+        <p class="font-extralight text-black font-mono" *ngIf="!hasPublications && !loading && !error">You don't have any publications yet</p>
+        <button *ngIf="!loading" mat-icon-button class="ml-2" (click)="refreshPublications()" title="Refresh publications">
+            <mat-icon>refresh</mat-icon>
+        </button>
     </div>
-    
+
+    <!-- Loading indicator -->
+    <div *ngIf="loading" class="flex justify-center items-center p-8">
+        <p class="text-gray-600">Loading your publications...</p>
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="error && !loading" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <p>{{ error }}</p>
+    </div>
+
+    <!-- No publications message -->
+    <div *ngIf="!hasPublications && !loading && !error" class="flex flex-col items-center justify-center p-8">
+        <mat-icon class="text-gray-400" style="transform: scale(2);">article_off</mat-icon>
+        <p class="text-gray-600 mt-4 text-lg">You don't have any publications yet</p>
+        <p class="text-gray-500 mt-2">Click the green button to add your first publication</p>
+    </div>
+
     <!-- Content -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6">
+    <div *ngIf="!loading && hasPublications" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6">
         <div *ngFor="let publication of publications" class="hover:cursor-pointer relative mb-2">
             <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col">
-                
+
                 <div class="flex flex-grow justify-center items-center bg-red-50 px-4 py-2 text-xs text-gray-500 border-b border-gray-200">
                     <span class="w-[60%]">{{ publication.category }}</span>
                     <div class="h-[80%] flex justify-end w-[40%]">
-                        <mat-icon class="text-red-500 hover:text-red-400" (click)="deletePublication(publication)">delete</mat-icon>                          
+                        <mat-icon class="text-red-500 hover:text-red-400" (click)="deletePublication(publication)">delete</mat-icon>
                     </div>
                 </div>
 

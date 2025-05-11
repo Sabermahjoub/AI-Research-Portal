@@ -47,16 +47,17 @@ export class CreateNewPublicationComponent implements OnInit {
     private snackBar: MatSnackBar
   ){
 
-    const currentUser = localStorage.getItem("currentUser");
+    const currentUserStr = localStorage.getItem("currentUser");
     let userObject;
-    
+
     try {
-      userObject = JSON.parse(currentUser || '');
+      userObject = JSON.parse(currentUserStr || '');
     } catch (e) {
-      // If it's not valid JSON, create a user object
-      userObject = { username: currentUser };
+      console.error('Error parsing currentUser from localStorage', e);
+      // If it's not valid JSON or doesn't exist, create a default user object
+      userObject = { username: 'guest' };
     }
-    
+
     this.publicationForm = this.fb.group({
       title: ['', [Validators.required]],
       domains: [[], [Validators.required]],
@@ -86,7 +87,7 @@ export class CreateNewPublicationComponent implements OnInit {
       console.log("domains : ", this.publicationForm.get('domains')?.value);
     }
   }
-  
+
   removeDomain(domainToRemove: String): void {
     this.selectedDomainNames = this.selectedDomainNames.filter(domain => domain.domainName !== domainToRemove);
     this.publicationForm.get('domains')?.setValue(this.selectedDomainNames);
@@ -95,21 +96,21 @@ export class CreateNewPublicationComponent implements OnInit {
   onSubmit() {
     if (this.publicationForm.valid && this.selectedFile) {
       this.isSubmitting = true;
-      
+
       const reader = new FileReader();
       reader.readAsDataURL(this.selectedFile); // This reads as Base64
-      
+
       reader.onload = () => {
         const base64String = reader.result as string;
         // Remove the data:application/pdf;base64, prefix
         const base64Content = base64String.split(',')[1];
-        
+
         // Create the publication object with the Base64 string
         const publicationData = this.publicationForm.value;
         //publicationData.content = base64Content;
         publicationData.content = "U29tZSBleGFtcGxlIGNvbnRlbnQ=";
         console.log(publicationData);
-  
+
         this.publicationsService.CreateNewPublication(publicationData)
           .subscribe({
             next: (response: any) => {
@@ -119,7 +120,7 @@ export class CreateNewPublicationComponent implements OnInit {
             error: (error: any) => {
               this.isSubmitting = false;
               console.error('Error creating publication:', error);
-              
+
               // Show error message in snackbar
               this.snackBar.open(
                 'Failed to create publication: ' + (error.error?.message || 'Unknown error'),
@@ -134,11 +135,11 @@ export class CreateNewPublicationComponent implements OnInit {
             }
           });
       };
-      
+
       reader.onerror = (error) => {
         this.isSubmitting = false;
         console.error('Error reading file:', error);
-        
+
         // Show error message for file reading error
         this.snackBar.open(
           'Error reading file: Please try again',
@@ -156,11 +157,11 @@ export class CreateNewPublicationComponent implements OnInit {
         const control = this.publicationForm.get(key);
         control?.markAsTouched();
       });
-      
+
       if (!this.selectedFile) {
         this.fileError = true;
         this.fileErrorMessage = 'Please upload a PDF file';
-        
+
         this.snackBar.open(
           'Please fix all errors before submitting',
           'Close',
@@ -180,17 +181,17 @@ export class CreateNewPublicationComponent implements OnInit {
     const controls = this.publicationForm.controls;
     const totalControls = Object.keys(controls).length; // +1 for file upload
     let filledControls = 0;
-    
+
     for (const key in controls) {
       if (controls[key].valid && controls[key].value) {
         filledControls++;
       }
     }
-    
+
     if (this.selectedFile) {
       filledControls++;
     }
-    
+
     return Math.round((filledControls / totalControls) * 100);
   }
 
@@ -210,7 +211,7 @@ export class CreateNewPublicationComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     this.isDragging = false;
-    
+
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
       const file = event.dataTransfer.files[0];
       this.validateAndSetFile(file);
@@ -233,7 +234,7 @@ export class CreateNewPublicationComponent implements OnInit {
       this.selectedFile = null;
       return;
     }
-    
+
     // Check file size (10MB max)
     const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
     if (file.size > maxSizeInBytes) {
@@ -242,7 +243,7 @@ export class CreateNewPublicationComponent implements OnInit {
       this.selectedFile = null;
       return;
     }
-    
+
     this.fileError = false;
     this.selectedFile = file;
     this.publicationForm.get('content')?.setValue(this.selectedFile);
@@ -259,11 +260,11 @@ export class CreateNewPublicationComponent implements OnInit {
 
   formatFileSize(bytes: number): string {
     if (bytes === 0) return '0 Bytes';
-    
+
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
+
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
