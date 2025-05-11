@@ -91,7 +91,7 @@
                     </div>
 
                     <!-- pending articles -->
-                    <div *ngIf="isAuthenticated" class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
+                    <div *ngIf="role === 'ADMIN' && isAuthenticated" class="flex justify-start gap-2 items-center w-full hover:cursor-pointer rounded-md px-4 py-2 my-1"
                         [ngClass]="{
                             'active-menu-item': activeItem === 'pending',
                             'text-white hover:bg-white/10': activeItem !== 'pending'
